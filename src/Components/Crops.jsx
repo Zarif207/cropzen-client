@@ -13,7 +13,7 @@ const Crops = ({ crops }) => {
           <img
             src={image}
             alt={name}
-            className="w-full h-56 object-cover transition-transform duration-500 hover:scale-105"
+            className="w-full h-65 object-cover transition-transform duration-500 hover:scale-105"
           />
 
           {/* Type Badge (top-right) */}
