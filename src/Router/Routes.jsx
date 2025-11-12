@@ -8,6 +8,7 @@ import MyInterests from "../Pages/MyInterests";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import CropDetails from "../Components/CropDetails";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -24,15 +25,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/addCrops",
-        element: <AddCrops />,
+        element: (
+          <PrivateRoute>
+            <AddCrops />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/myPosts",
-        element: <MyPost />,
+        element: (
+          <PrivateRoute>
+            <MyPost />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/myInterests",
-        element: <MyInterests />,
+        element: (
+          <PrivateRoute>
+            <MyInterests />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/auth/login",
@@ -44,8 +57,13 @@ export const router = createBrowserRouter([
       },
       {
         path: "/cropDetails/:id",
-        loader: ({params}) => fetch(`http://localhost:3000/crops/${params.id}`),
-        Component: CropDetails,
+        element: (
+          <PrivateRoute>
+            <CropDetails />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/crops/${params.id}`),
       },
     ],
   },

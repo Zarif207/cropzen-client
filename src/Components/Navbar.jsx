@@ -1,5 +1,5 @@
 import React, { use } from "react";
-import { Link, NavLink } from "react-router"; // ✅ keep same
+import { Link, NavLink } from "react-router"; 
 import { AuthContext } from "../Context/AuthContext";
 
 const Navbar = () => {
@@ -28,25 +28,21 @@ const Navbar = () => {
           All Crops
         </NavLink>
       </li>
-      {user && (
-        <>
-          <li>
-            <NavLink to="/addCrops" className={linkClass}>
-              Add Crops
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/myPosts" className={linkClass}>
-              My Posts
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/myInterests" className={linkClass}>
-              My Interests
-            </NavLink>
-          </li>
-        </>
-      )}
+      <li>
+        <NavLink to="/addCrops" className={linkClass}>
+          Add Crops
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/myPosts" className={linkClass}>
+          My Posts
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/myInterests" className={linkClass}>
+          My Interests
+        </NavLink>
+      </li>
     </>
   );
 
@@ -80,7 +76,7 @@ const Navbar = () => {
             </ul>
           </div>
           <a className="btn btn-ghost normal-case text-2xl font-extrabold text-green-700 tracking-wide">
-            Agrikon<span className="text-green-500">.</span>
+            Cropzen<span className="text-green-500">.</span>
           </a>
         </div>
 

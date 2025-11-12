@@ -15,7 +15,7 @@ const Footer = () => {
               alt="logo"
               className="w-10 h-10"
             />
-            <h2 className="text-2xl font-bold text-white">Agrikon</h2>
+            <h2 className="text-2xl font-bold text-white">Cropzen</h2>
           </div>
           <p className="text-gray-300 mb-6 leading-relaxed">
             There are many variations of passages of lorem ipsum available,
