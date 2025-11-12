@@ -1,48 +1,81 @@
-import React, { use } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
+import { FcGoogle } from "react-icons/fc";
+import Swal from "sweetalert2";
 
 const Login = () => {
-  const { signInUser, signInWithGoogle } = use(AuthContext);
+  const { signInUser, signInWithGoogle } = useContext(AuthContext);
+  const [error, setError] = useState("");
 
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogIn = (e) => {
     e.preventDefault();
-    const email = e.target.email.value
-    const password = e.target.password.value
-    console.log(email, password);
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    setError(""); // clear previous error
 
     signInUser(email, password)
-      .then(result => {
+      .then((result) => {
         console.log(result.user);
-        e.target.result();
+        Swal.fire({
+          title: "Login Successful!",
+          text: `Welcome back, ${result.user.displayName || "Farmer"} 🌾`,
+          icon: "success",
+          confirmButtonColor: "#16a34a",
+        });
+        e.target.reset();
         navigate(location.state || "/");
       })
-      .catch(error =>{
-        console.log(error)
-      })
+      .catch((error) => {
+        console.error(error);
+        setError("Invalid email or password.");
+        Swal.fire({
+          title: "Login Failed!",
+          text: "Invalid email or password. Please try again.",
+          icon: "error",
+          confirmButtonColor: "#dc2626",
+        });
+      });
   };
 
-    const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = () => {
     signInWithGoogle()
       .then((result) => {
         console.log(result.user);
-        navigate(location?.state || "/");
+        Swal.fire({
+          title: "Google Sign-In Successful!",
+          text: `Welcome, ${result.user.displayName || "User"} 👋`,
+          icon: "success",
+          confirmButtonColor: "#16a34a",
+        });
+        navigate(location.state || "/");
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
+        Swal.fire({
+          title: "Google Sign-In Failed!",
+          text: error.message,
+          icon: "error",
+          confirmButtonColor: "#dc2626",
+        });
       });
   };
-  return (
-    <section className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white rounded-xl shadow-xl p-10 w-full max-w-md">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-3">
-          Login Now!
-        </h2>
 
-        <form onSubmit={handleLogIn} className="space-y-6">
+  return (
+    <section className="flex items-center justify-center h-[700px]">
+      <div className="bg-white rounded-2xl shadow-2xl p-10 w-full max-w-md border border-green-100">
+        <h2 className="text-3xl font-extrabold text-green-700 text-center mb-2">
+          Login to Your Account
+        </h2>
+        <p className="text-center text-gray-500 mb-6">
+          Access your farming dashboard 🌿
+        </p>
+
+        <form onSubmit={handleLogIn} className="space-y-5">
           <div>
             <label className="block text-gray-700 font-medium mb-1">
               Email
@@ -50,8 +83,9 @@ const Login = () => {
             <input
               type="email"
               name="email"
-              placeholder="email"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+              placeholder="Enter your email"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
             />
           </div>
 
@@ -62,61 +96,55 @@ const Login = () => {
             <input
               type="password"
               name="password"
-              placeholder="password"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+              placeholder="Enter your password"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
             />
+            <div className="text-right mt-2">
+              <Link
+                to="/auth/forgot-password"
+                className="text-sm text-green-600 hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </div>
           </div>
+
+          {error && (
+            <p className="text-red-500 text-sm text-center font-medium">
+              {error}
+            </p>
+          )}
 
           <button
             type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition-colors"
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-md"
           >
             Login
           </button>
         </form>
 
+        {/* Divider */}
         <div className="flex items-center my-6">
           <hr className="flex-grow border-gray-300" />
           <span className="mx-4 text-gray-500">OR</span>
           <hr className="flex-grow border-gray-300" />
         </div>
 
-        {/* Google */}
-        <button onClick={handleGoogleSignIn} className="w-full border border-gray-300 rounded-lg py-3 flex items-center justify-center gap-2 transition">
-          <svg
-            aria-label="Google logo"
-            width="16"
-            height="16"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-          >
-            <g>
-              <path d="m0 0H512V512H0" fill="#fff"></path>
-              <path
-                fill="#34a853"
-                d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"
-              ></path>
-              <path
-                fill="#4285f4"
-                d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"
-              ></path>
-              <path
-                fill="#fbbc02"
-                d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"
-              ></path>
-              <path
-                fill="#ea4335"
-                d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"
-              ></path>
-            </g>
-          </svg>
-          Login with Google
+        {/* Google Sign-In */}
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full border border-gray-300 hover:border-green-400 rounded-lg py-3 flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-md"
+        >
+          <FcGoogle className="text-2xl" />
+          <span className="text-gray-700 font-medium">Login with Google</span>
         </button>
-        <p className="text-center text-gray-600 mb-8 mt-5">
-          Don't have an account?{" "}
+
+        <p className="text-center text-gray-600 mt-6">
+          Don’t have an account?{" "}
           <Link
-            to={"/auth/register"}
-            className="text-purple-500 cursor-pointer hover:underline"
+            to="/auth/register"
+            className="text-green-600 font-semibold hover:underline"
           >
             Register Now
           </Link>
