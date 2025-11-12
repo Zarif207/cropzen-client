@@ -1,54 +1,47 @@
 import React, { use } from "react";
-import { Link, NavLink } from "react-router"; // ✅ same as your code
+import { Link, NavLink } from "react-router"; // ✅ keep same
 import { AuthContext } from "../Context/AuthContext";
 
 const Navbar = () => {
   const { user, signOutUser } = use(AuthContext);
 
   const handleSignOut = () => {
-    signOutUser()
-      .then()
-      .catch();
+    signOutUser().then().catch();
   };
+
+  const linkClass = ({ isActive }) =>
+    `relative font-medium transition duration-200 ${
+      isActive
+        ? "text-green-700 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-green-600"
+        : "text-gray-700 hover:text-green-600"
+    }`;
 
   const links = (
     <>
       <li>
-        <NavLink to="/" className="hover:text-green-600 transition font-medium">
+        <NavLink to="/" className={linkClass}>
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="/allCrops"
-          className="hover:text-green-600 transition font-medium"
-        >
+        <NavLink to="/allCrops" className={linkClass}>
           All Crops
         </NavLink>
       </li>
       {user && (
         <>
           <li>
-            <NavLink
-              to="/addCrops"
-              className="hover:text-green-600 transition font-medium"
-            >
+            <NavLink to="/addCrops" className={linkClass}>
               Add Crops
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/myPosts"
-              className="hover:text-green-600 transition font-medium"
-            >
+            <NavLink to="/myPosts" className={linkClass}>
               My Posts
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/myInterests"
-              className="hover:text-green-600 transition font-medium"
-            >
+            <NavLink to="/myInterests" className={linkClass}>
               My Interests
             </NavLink>
           </li>

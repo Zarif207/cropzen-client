@@ -5,8 +5,8 @@ const Crops = ({ crops }) => {
   const { _id, name, type, pricePerUnit, image, owner, createdAt } = crops;
 
   return (
-    <div className="flex justify-center">
-      <div className="bg-white shadow-sm hover:shadow-lg transition-all duration-500 rounded-xl overflow-hidden w-[340px] sm:w-[360px] flex flex-col">
+    <div className="flex justify-center py-5">
+      <div className="bg-white shadow-sm hover:shadow-lg transition-all duration-500 rounded-xl overflow-hidden w-[340px] sm:w-[360px] flex flex-col py-5">
         
         {/* Image Section */}
         <div className="relative">
