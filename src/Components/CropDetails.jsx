@@ -36,6 +36,7 @@ const CropDetails = () => {
       cropId: cropId,
       userName: name,
       userEmail: email,
+      userImage: user?.photoURL,
       interest,
       quantity,
       message,
@@ -60,6 +61,11 @@ const CropDetails = () => {
             icon: "success",
             draggable: true,
           });
+          // new interest to the state (SORTING)
+          newInterest.id = data.insertedId;
+          const newInterested = [...interested, newInterest];
+          newInterested.sort((a, b) => Number(b.interest) - Number(a.interest));
+          setInterested(newInterested);
         }
       });
   };
@@ -154,6 +160,53 @@ const CropDetails = () => {
         <h3>
           Interested For This Crop: <span>{interested.length}</span>
         </h3>
+
+        {/* table */}
+        <div className="overflow-x-auto">
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr>
+                <th>SL No.</th>
+                <th>Buyer Name</th>
+                <th>Buyer Email</th>
+                <th>Interest Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* row 1 */}
+              {interested.map((interest, index) => (
+                <tr>
+                  <th>{index + 1}</th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img
+                            src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                            alt="Avatar Tailwind CSS Component"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">{interest.userName}</div>
+                        <div className="text-sm opacity-50">United States</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{interest.userEmail}</td>
+                  <td>{interest.interest}</td>
+                  <th>
+                    <button className="btn btn-ghost btn-xs">details</button>
+                  </th>
+                </tr>
+              ))}
+
+              {/* row 2 */}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
