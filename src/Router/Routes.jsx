@@ -10,11 +10,13 @@ import Register from "../Pages/Auth/Register";
 import CropDetails from "../Pages/CropDetails";
 import PrivateRoute from "./PrivateRoute";
 import MyProfile from "../Pages/MyProfile";
+import Error404 from "../Pages/Error404";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    errorElement: <Error404 />,
     children: [
       {
         index: true,
@@ -53,10 +55,9 @@ export const router = createBrowserRouter([
         path: "/myProfile",
         element: (
           <PrivateRoute>
-            <MyProfile/>
+            <MyProfile />
           </PrivateRoute>
-        )
-
+        ),
       },
       {
         path: "/auth/login",

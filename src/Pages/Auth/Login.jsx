@@ -72,7 +72,7 @@ const Login = () => {
           Login to Your Account
         </h2>
         <p className="text-center text-gray-500 mb-6">
-          Access your farming dashboard 🌿
+          Access your farming dashboard
         </p>
 
         <form onSubmit={handleLogIn} className="space-y-5">

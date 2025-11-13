@@ -59,7 +59,7 @@ const AddCrops = () => {
     <div className="max-w-5xl mx-auto p-8">
       <div className="bg-white shadow-lg rounded-2xl p-8 border border-gray-100">
         <h2 className="text-3xl font-bold text-green-700 mb-6 text-center">
-          🌾 Add New Crop
+          Add New Crop
         </h2>
         <form onSubmit={handleAddCrop} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Crop Name */}
@@ -75,19 +75,24 @@ const AddCrops = () => {
           </div>
 
           {/* Type */}
-          <div className="form-control">
-            <label className="label font-medium text-gray-700">Type</label>
-            <select name="type" className="select select-bordered w-full" required>
-              <option disabled selected>
-                Select Type
-              </option>
-              <option>Vegetable</option>
-              <option>Fruit</option>
-              <option>Grain</option>
-              <option>Pulse</option>
-              <option>Other</option>
-            </select>
-          </div>
+<div className="form-control">
+  <label className="label font-medium text-gray-700">Type</label>
+  <select
+    name="type"
+    className="select select-bordered w-full"
+    required
+    defaultValue=""
+  >
+    <option value="" disabled>
+      Select Type
+    </option>
+    <option value="Vegetable">Vegetable</option>
+    <option value="Fruit">Fruit</option>
+    <option value="Grain">Grain</option>
+    <option value="Pulse">Pulse</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
 
           {/* Price per unit */}
           <div className="form-control">
@@ -101,18 +106,23 @@ const AddCrops = () => {
             />
           </div>
 
-          {/* Unit */}
-          <div className="form-control">
-            <label className="label font-medium text-gray-700">Unit</label>
-            <select name="unit" className="select select-bordered w-full" required>
-              <option disabled selected>
-                Select Unit
-              </option>
-              <option>kg</option>
-              <option>ton</option>
-              <option>bag</option>
-            </select>
-          </div>
+         {/* Unit */}
+<div className="form-control">
+  <label className="label font-medium text-gray-700">Unit</label>
+  <select
+    name="unit"
+    className="select select-bordered w-full"
+    required
+    defaultValue=""
+  >
+    <option value="" disabled>
+      Select Unit
+    </option>
+    <option value="kg">kg</option>
+    <option value="ton">ton</option>
+    <option value="bag">bag</option>
+  </select>
+</div>
 
           {/* Quantity */}
           <div className="form-control">
