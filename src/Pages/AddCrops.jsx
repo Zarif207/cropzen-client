@@ -50,7 +50,7 @@ const AddCrops = () => {
             icon: "success",
             confirmButtonColor: "#16a34a",
           });
-          navigate("/my-Posts");
+          navigate("/myPosts");
         }
       });
   };
