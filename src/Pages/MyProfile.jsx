@@ -1,22 +1,45 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../Context/AuthContext";
-import { FiEdit3, FiUser, FiMail, FiMapPin, FiCamera } from "react-icons/fi";
+import { FiEdit3, FiUser, FiMail, FiCamera } from "react-icons/fi";
+import { updateProfile } from "firebase/auth";
+import Swal from "sweetalert2";
 
 const MyProfile = () => {
-  const { user, updateUserProfile } = useContext(AuthContext); // Ensure updateUserProfile is available in AuthContext
+  const { user } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user?.displayName || "");
   const [photoURL, setPhotoURL] = useState(user?.photoURL || "");
-  const [location, setLocation] = useState(user?.location || "");
+  const [loading, setLoading] = useState(false);
 
   const handleSave = async (e) => {
     e.preventDefault();
+
+    if (!user) return;
+
+    setLoading(true);
     try {
-      await updateUserProfile({ displayName: name, photoURL });
-      // You can also send updated info to your backend if needed here
+      await updateProfile(user, {
+        displayName: name,
+        photoURL: photoURL,
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Profile Updated!",
+        text: "Your profile information has been updated successfully.",
+        confirmButtonColor: "#16a34a",
+      });
+
       setIsEditing(false);
-    } catch (err) {
-      console.error("Profile update failed:", err);
+    } catch (error) {
+      console.error("Profile update failed:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: error.message,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,17 +60,11 @@ const MyProfile = () => {
             alt="Profile"
             className="w-36 h-36 rounded-full border-4 border-green-200 object-cover shadow-md"
           />
+
           {isEditing && (
-            <label className="absolute bottom-2 right-2 bg-green-600 text-white p-2 rounded-full cursor-pointer hover:bg-green-700 transition">
+            <div className="absolute bottom-2 right-2 bg-green-600 text-white p-2 rounded-full cursor-pointer hover:bg-green-700 transition">
               <FiCamera />
-              <input
-                type="text"
-                className="hidden"
-                value={photoURL}
-                onChange={(e) => setPhotoURL(e.target.value)}
-                placeholder="Photo URL"
-              />
-            </label>
+            </div>
           )}
         </div>
 
@@ -78,19 +95,6 @@ const MyProfile = () => {
                 />
               </div>
 
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-                  placeholder="e.g., Dhaka, Bangladesh"
-                />
-              </div>
-
               <div className="flex justify-end gap-3">
                 <button
                   type="button"
@@ -101,9 +105,14 @@ const MyProfile = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                  disabled={loading}
+                  className={`px-4 py-2 rounded-lg text-white transition ${
+                    loading
+                      ? "bg-green-400 cursor-not-allowed"
+                      : "bg-green-600 hover:bg-green-700"
+                  }`}
                 >
-                  Save Changes
+                  {loading ? "Saving..." : "Save Changes"}
                 </button>
               </div>
             </form>
@@ -117,12 +126,6 @@ const MyProfile = () => {
                 <FiMail className="text-green-600" />
                 <span>{user?.email}</span>
               </div>
-              {location && (
-                <div className="flex items-center gap-2 text-lg">
-                  <FiMapPin className="text-green-600" />
-                  <span>{location}</span>
-                </div>
-              )}
 
               <button
                 onClick={() => setIsEditing(true)}
