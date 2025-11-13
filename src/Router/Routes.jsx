@@ -9,6 +9,7 @@ import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import CropDetails from "../Pages/CropDetails";
 import PrivateRoute from "./PrivateRoute";
+import MyProfile from "../Pages/MyProfile";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,15 @@ export const router = createBrowserRouter([
             <MyInterests />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/myProfile",
+        element: (
+          <PrivateRoute>
+            <MyProfile/>
+          </PrivateRoute>
+        )
+
       },
       {
         path: "/auth/login",

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiMapPin } from "react-icons/fi";
 import { AiOutlineDollar } from "react-icons/ai";
-import { FaBoxes, FaUser } from "react-icons/fa";
+import { FaBoxes, FaUser, FaSeedling } from "react-icons/fa";
 
 const AllCrops = () => {
   const [crops, setCrops] = useState([]);
@@ -41,7 +41,7 @@ const AllCrops = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
-      {/* 🌿 Search Bar */}
+      {/* 🔍 Search Bar */}
       <div className="flex justify-center mb-10">
         <div className="relative w-full md:w-1/2">
           <input
@@ -60,70 +60,73 @@ const AllCrops = () => {
       {/* 🌱 Crop Cards */}
       {filteredCrops.length === 0 ? (
         <div className="text-center text-gray-600 text-lg mt-16">
-          ❌ No results found for "<span className="font-semibold">{search}</span>"
+          No crops found for{" "}
+          <span className="font-semibold text-green-600">"{search}"</span>
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCrops.map((crop) => (
             <div
               key={crop._id}
-              className="relative bg-white rounded-2xl shadow-lg border border-green-100 
-                         overflow-hidden hover:shadow-2xl transition-transform duration-300 
-                         hover:-translate-y-1"
+              className="group relative bg-white rounded-2xl overflow-hidden 
+                         shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100"
             >
-              {/* Type Badge */}
-              <span className="absolute top-3 right-3 bg-green-100 text-green-700 text-sm font-semibold px-3 py-1 rounded-full shadow-sm">
-                {crop.type}
-              </span>
+              {/* 🖼️ Image Banner */}
+              <div className="relative h-52 w-full overflow-hidden">
+                <img
+                  src={crop.image}
+                  alt={crop.name}
+                  className="h-full w-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-3 left-4">
+                  <h3 className="text-white text-2xl font-semibold drop-shadow-md flex items-center gap-2">
+                     {crop.name}
+                  </h3>
+                </div>
+                <span className="absolute top-3 right-3 bg-white/90 text-green-700 font-semibold text-sm px-3 py-1 rounded-full shadow-sm">
+                  {crop.type}
+                </span>
+              </div>
 
-              <img
-                src={crop.image}
-                alt={crop.name}
-                className="h-52 w-full object-cover"
-              />
-
-              <div className="p-5 space-y-2">
-                <h3 className="text-xl font-semibold text-green-700">
-                  {crop.name}
-                </h3>
-
-                {/* 💰 Price */}
-                <p className="text-gray-700 flex items-center gap-1">
-                  <AiOutlineDollar className="text-green-600" />
-                  <span className="font-semibold">{crop.pricePerUnit}</span> / {crop.unit}
+              {/* 💰 Quick Info Bar */}
+              <div className="flex items-center justify-between bg-green-50 py-3 px-5 border-b border-green-100">
+                <p className="flex items-center gap-1 text-green-700 font-semibold">
+                  
+                  {crop.pricePerUnit} / {crop.unit}
                 </p>
-
-                {/* 📦 Quantity */}
                 {crop.quantity && (
-                  <p className="text-gray-700 flex items-center gap-2">
-                    <FaBoxes className="text-yellow-500" />
-                    <span className="font-medium">{crop.quantity}</span> available
+                  <p className="flex items-center gap-1 text-gray-700 font-medium">
+                 
+                    {crop.quantity} available
                   </p>
                 )}
+              </div>
 
-                {/* 👤 Owner Name */}
-                {crop.owner?.ownerName && (
-                  <p className="text-gray-600 text-sm flex items-center gap-2">
-                    <FaUser className="text-green-600" />
-                    {crop.owner.ownerName}
-                  </p>
-                )}
-
-                {/* 📝 Description */}
-                <p className="text-gray-600 text-sm line-clamp-2">
+              {/* 📋 Crop Description */}
+              <div className="p-5 space-y-3">
+                <p className="text-gray-600 text-sm line-clamp-2 min-h-[40px]">
                   {crop.description}
                 </p>
 
-                {/* 📍 Location */}
-                <p className="text-sm text-gray-500">📍 {crop.location}</p>
+                {/* 👤 Owner and 📍 Location */}
+                <div className="flex justify-between items-center text-sm text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <FaUser className="text-green-600" />
+                    {crop.owner?.ownerName}
+                  </div>
+                  <p className="flex items-center gap-1">
+                    <FiMapPin className="text-green-500" /> {crop.location}
+                  </p>
+                </div>
 
                 {/* 🔗 Details Button */}
                 <div className="pt-3">
                   <Link
                     to={`/cropDetails/${crop._id}`}
-                    className="inline-block w-full text-center bg-gradient-to-r from-green-600 to-green-500 
-                               text-white px-4 py-2 rounded-full hover:from-green-700 hover:to-green-600 
-                               transition-all duration-300 shadow-sm"
+                    className="block w-full text-center bg-gradient-to-r from-green-600 to-green-500 
+                               text-white py-2.5 rounded-xl font-medium shadow-sm 
+                               hover:from-green-700 hover:to-green-600 transition-all duration-300"
                   >
                     View Details
                   </Link>

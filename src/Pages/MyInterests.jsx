@@ -69,49 +69,46 @@ const MyInterests = () => {
           You haven't shown interest in any crops yet.
         </div>
       ) : (
-        <div className="overflow-x-auto bg-white shadow-lg rounded-2xl p-6">
-          <table className="table w-full">
-            <thead className="bg-green-600 text-white rounded-t-2xl">
-              <tr>
-                <th>#</th>
-                <th>Crop</th>
-                <th>Seller</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Action</th>
+        <div className="overflow-x-auto bg-white shadow-md rounded-2xl border border-gray-200">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-green-600 text-white">
+                <th className="py-4 px-6 rounded-tl-2xl text-lg font-semibold">
+                  SL No.
+                </th>
+                <th className="py-4 px-6 text-lg font-semibold">Crop</th>
+                <th className="py-4 px-6 text-lg font-semibold">Seller</th>
+                <th className="py-4 px-6 text-lg font-semibold">Price</th>
+                <th className="py-4 px-6 text-lg font-semibold">Status</th>
+                <th className="py-4 px-6 rounded-tr-2xl text-lg font-semibold text-center">
+                  Action
+                </th>
               </tr>
             </thead>
-
             <tbody>
               {interests.map((interest, index) => (
                 <tr
                   key={interest._id}
-                  className="hover:bg-green-50 transition duration-200"
+                  className="hover:bg-gray-50 transition duration-200 border-b border-gray-200"
                 >
-                  <td className="font-semibold text-gray-600">
+                  <td className="py-4 px-6 font-semibold text-gray-700">
                     {index + 1}
                   </td>
 
-                  <td>
+                  <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="avatar">
-                        <div className="mask mask-squircle h-12 w-12">
-                          <img
-                            src={interest.userImage}
-                            alt="Crop"
-                            className="object-cover"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <div className="font-bold text-gray-800">
-                          {interest.userName}
-                        </div>
-                      </div>
+                      <img
+                        src={interest.userImage}
+                        alt="Crop"
+                        className="h-14 w-14 rounded-lg object-cover shadow-sm border border-gray-200"
+                      />
+                      <span className="font-bold text-gray-800">
+                        {interest.userName}
+                      </span>
                     </div>
                   </td>
 
-                  <td className="text-gray-700">
+                  <td className="py-4 px-6 text-gray-700">
                     Wyman-Ledner
                     <br />
                     <span className="badge badge-ghost badge-sm mt-1">
@@ -119,26 +116,26 @@ const MyInterests = () => {
                     </span>
                   </td>
 
-                  <td className="font-semibold text-green-700">
+                  <td className="py-4 px-6 font-semibold text-green-700">
                     ${interest.interest}
                   </td>
 
-                  <td>
+                  <td className="py-4 px-6">
                     {interest.status === "pending" ? (
-                      <span className="badge badge-warning text-white px-3 py-1 rounded-lg">
+                      <span className="bg-yellow-400 text-white px-3 py-1 rounded-lg text-sm">
                         Pending
                       </span>
                     ) : (
-                      <span className="badge badge-success text-white px-3 py-1 rounded-lg">
+                      <span className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm">
                         {interest.status}
                       </span>
                     )}
                   </td>
 
-                  <td>
+                  <td className="py-4 px-6 text-center">
                     <button
                       onClick={() => handleRemoveInterest(interest._id)}
-                      className="btn btn-sm bg-red-500 hover:bg-red-600 text-white border-none rounded-lg"
+                      className="bg-red-500 hover:bg-red-600 text-white font-medium px-5 py-2 rounded-lg shadow-sm transition"
                     >
                       Remove
                     </button>

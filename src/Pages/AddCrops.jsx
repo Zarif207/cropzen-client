@@ -166,7 +166,7 @@ const AddCrops = () => {
           <div className="md:col-span-2">
             <button
               type="submit"
-              className="btn bg-gradient-to-r from-green-600 to-lime-500 text-white w-full hover:from-green-700 hover:to-lime-600 mt-4"
+              className="btn bg-[#00ac41] text-white w-full hover:from-green-700 hover:to-lime-600 mt-4"
             >
               Add Crop
             </button>

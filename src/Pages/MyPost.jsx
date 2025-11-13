@@ -24,8 +24,8 @@ const MyPost = () => {
       text: "This crop will be permanently deleted!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#16a34a",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#16a34a",
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -132,7 +132,7 @@ const MyPost = () => {
                       onClick={() => handleDelete(crop._id)}
                       className="btn btn-sm bg-red-500 hover:bg-red-600 text-white"
                     >
-                      Delete
+                      Delete 
                     </button>
                   </td>
                 </tr>

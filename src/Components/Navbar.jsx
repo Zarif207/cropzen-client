@@ -1,6 +1,7 @@
 import React, { use } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
+import { FaUserCircle } from "react-icons/fa"; // 👈 default user icon
 
 const Navbar = () => {
   const { user, signOutUser } = use(AuthContext);
@@ -41,6 +42,11 @@ const Navbar = () => {
       <li>
         <NavLink to="/myInterests" className={linkClass}>
           My Interests
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/myProfile" className={linkClass}>
+          My Profile
         </NavLink>
       </li>
     </>
@@ -89,18 +95,20 @@ const Navbar = () => {
 
         {/* Right side */}
         <div className="navbar-end flex items-center gap-4">
-          {user && (
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-green-600">
+          {/* 👤 Always show an avatar */}
+          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-green-600 flex items-center justify-center bg-white">
+            {user?.photoURL ? (
               <img
-                src={
-                  user?.photoURL ||
-                  "https://cdn-icons-png.flaticon.com/512/847/847969.png"
-                }
+                src={user.photoURL}
                 alt="User Avatar"
                 className="w-full h-full object-cover"
               />
-            </div>
-          )}
+            ) : (
+              <FaUserCircle className="text-green-600 text-3xl" />
+            )}
+          </div>
+
+          {/* 🔘 Auth Button */}
           {user ? (
             <button
               onClick={handleSignOut}

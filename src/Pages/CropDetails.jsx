@@ -4,6 +4,8 @@ import { AuthContext } from "../Context/AuthContext";
 import Swal from "sweetalert2";
 import { FaArrowLeft } from "react-icons/fa";
 import { FiSend, FiX } from "react-icons/fi";
+import { IoLocationSharp } from "react-icons/io5";
+import { GiFarmer } from "react-icons/gi";
 
 const CropDetails = () => {
   const { id: cropId } = useParams();
@@ -14,9 +16,9 @@ const CropDetails = () => {
   const [interests, setInterests] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
-  const [alreadyInterested, setAlreadyInterested] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [sortOrder, setSortOrder] = useState("highToLow");
 
   // ✅ Fetch crop info
   useEffect(() => {
@@ -33,16 +35,21 @@ const CropDetails = () => {
       .then((res) => res.json())
       .then((data) => {
         setInterests(data);
-        if (data.some((i) => i.userEmail === user?.email)) {
-          setAlreadyInterested(true);
-        }
         setLoading(false);
       })
       .catch((err) => console.error("Error fetching interests:", err));
-  }, [cropId, user?.email]);
+  }, [cropId]);
 
   const isOwner = user?.email === crop?.owner?.ownerEmail;
-  const totalPrice = quantity * crop?.pricePerUnit;
+  const totalPrice = crop ? quantity * crop.pricePerUnit : 0;
+
+  // ✅ Sorting interests safely
+  const sortedInterests = [...interests].sort((a, b) => {
+    if (!crop) return 0;
+    const totalA = a.quantity * crop.pricePerUnit;
+    const totalB = b.quantity * crop.pricePerUnit;
+    return sortOrder === "highToLow" ? totalB - totalA : totalA - totalB;
+  });
 
   // ✅ Submit interest form
   const handleInterestSubmit = async (e) => {
@@ -82,15 +89,14 @@ const CropDetails = () => {
       .then(() => {
         Swal.fire("Success!", "Interest submitted successfully!", "success");
         setInterests((prev) => [...prev, interestData]);
-        setAlreadyInterested(true);
         setShowModal(false);
       })
       .catch((err) => console.error(err));
   };
 
-  // ✅ Handle Accept/Reject (only works for owner)
+  // ✅ Handle Accept/Reject (only for owner)
   const handleStatusChange = (interestId, status) => {
-    if (!isOwner) return; // safeguard for non-owner
+    if (!isOwner) return;
     fetch(`http://localhost:3000/interests/${cropId}/${interestId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -124,7 +130,7 @@ const CropDetails = () => {
         </button>
       </div>
 
-      {/* 🌾 Crop Details */}
+      {/* 🌾 Crop Details Section */}
       <div className="grid md:grid-cols-2 gap-8 bg-white p-8 rounded-2xl shadow-md border border-green-100">
         <img
           src={crop.image}
@@ -149,24 +155,23 @@ const CropDetails = () => {
             <p className="text-gray-500">Available: {crop.quantity}</p>
           </div>
 
-          <p className="text-gray-700 font-medium">📍 {crop.location}</p>
-          <p className="text-gray-700 flex items-center gap-2">
-            👨‍🌾 <span className="font-semibold">{crop.owner?.ownerName}</span>
+          <p className="text-gray-700 font-medium flex items-center gap-2">
+            <IoLocationSharp className="text-red-600 text-lg" />
+            {crop.location}
           </p>
 
-          {!isOwner && !alreadyInterested && (
+          <p className="text-gray-700 flex items-center gap-2">
+            <GiFarmer className="text-green-600 text-lg" />
+            <span className="font-semibold">{crop.owner?.ownerName}</span>
+          </p>
+
+          {!isOwner && (
             <button
               onClick={() => setShowModal(true)}
               className="mt-4 flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-all"
             >
               <FiSend /> Send Interest
             </button>
-          )}
-
-          {alreadyInterested && (
-            <p className="text-gray-600 italic mt-3">
-              ✅ You’ve already sent an interest for this crop.
-            </p>
           )}
         </div>
       </div>
@@ -231,38 +236,59 @@ const CropDetails = () => {
         </div>
       )}
 
-      {/* 👀 Always show interest table */}
+      {/* 📋 Received Interests Section */}
       <div className="bg-white p-8 rounded-2xl shadow-md border border-green-100">
-        <h3 className="text-2xl font-semibold text-green-700 mb-4">
-          Received Interests ({interests.length})
-        </h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-2xl font-semibold text-green-700">
+            Received Interests ({interests.length})
+          </h3>
+
+          {/* Sorting Dropdown */}
+          {interests.length > 0 && (
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+              className="border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500 outline-none"
+            >
+              <option value="highToLow">High to Low</option>
+              <option value="lowToHigh">Low to High</option>
+            </select>
+          )}
+        </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full border text-left">
-            <thead className="bg-green-50 text-green-700">
+          <table className="w-full border border-gray-200 text-left">
+            <thead className="bg-green-50 text-green-700 border-b border-gray-200">
               <tr>
                 <th className="px-4 py-2">Buyer Name</th>
                 <th className="px-4 py-2">Quantity</th>
+                <th className="px-4 py-2">Total Price</th>
                 <th className="px-4 py-2">Message</th>
                 <th className="px-4 py-2">Status</th>
                 {isOwner && <th className="px-4 py-2 text-center">Actions</th>}
               </tr>
             </thead>
             <tbody>
-              {interests.length === 0 ? (
+              {sortedInterests.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={isOwner ? 5 : 4}
+                    colSpan={isOwner ? 6 : 5}
                     className="text-center text-gray-500 py-6 italic"
                   >
                     No interests yet for this crop.
                   </td>
                 </tr>
               ) : (
-                interests.map((i) => (
-                  <tr key={i._id} className="hover:bg-gray-50 border-t">
+                sortedInterests.map((i) => (
+                  <tr
+                    key={i._id || Math.random()}
+                    className="hover:bg-gray-50 border-t border-gray-200"
+                  >
                     <td className="px-4 py-2">{i.userName}</td>
                     <td className="px-4 py-2">{i.quantity}</td>
+                    <td className="px-4 py-2 font-medium text-green-600">
+                      ৳ {crop ? i.quantity * crop.pricePerUnit : 0}
+                    </td>
                     <td className="px-4 py-2">{i.message}</td>
                     <td className="px-4 py-2">
                       <span
