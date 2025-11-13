@@ -1,20 +1,44 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import Swal from "sweetalert2";
 
 const MyInterests = () => {
-  const { user } = use(AuthContext);
+  const { user } = useContext(AuthContext);
   const [interests, setInterests] = useState([]);
+  const [sortOrder, setSortOrder] = useState("none"); // ✅ new
 
   useEffect(() => {
     if (user?.email) {
       fetch(`http://localhost:3000/interest?email=${user.email}`)
         .then((res) => res.json())
-        .then((data) => {
-          setInterests(data);
-        });
+        .then(async (data) => {
+          const enrichedData = await Promise.all(
+            data.map(async (interest) => {
+              try {
+                const res = await fetch(
+                  `http://localhost:3000/crops/${interest.cropId}`
+                );
+                const crop = await res.json();
+                return { ...interest, crop };
+              } catch {
+                return { ...interest, crop: null };
+              }
+            })
+          );
+          setInterests(enrichedData);
+        })
+        .catch((err) => console.error("Error fetching interests:", err));
     }
   }, [user?.email]);
+
+  // ✅ Sorting logic
+  const sortedInterests = [...interests].sort((a, b) => {
+    const priceA = a.crop?.pricePerUnit || 0;
+    const priceB = b.crop?.pricePerUnit || 0;
+    if (sortOrder === "lowToHigh") return priceA - priceB;
+    if (sortOrder === "highToLow") return priceB - priceA;
+    return 0;
+  });
 
   const handleRemoveInterest = (_id) => {
     Swal.fire({
@@ -39,10 +63,7 @@ const MyInterests = () => {
                 icon: "success",
                 confirmButtonColor: "#16a34a",
               });
-              const remainingInterest = interests.filter(
-                (interest) => interest._id !== _id
-              );
-              setInterests(remainingInterest);
+              setInterests((prev) => prev.filter((i) => i._id !== _id));
             }
           });
       }
@@ -69,82 +90,101 @@ const MyInterests = () => {
           You haven't shown interest in any crops yet.
         </div>
       ) : (
-        <div className="overflow-x-auto bg-white shadow-md rounded-2xl border border-gray-200">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-green-600 text-white">
-                <th className="py-4 px-6 rounded-tl-2xl text-lg font-semibold">
-                  SL No.
-                </th>
-                <th className="py-4 px-6 text-lg font-semibold">Crop</th>
-                <th className="py-4 px-6 text-lg font-semibold">Seller</th>
-                <th className="py-4 px-6 text-lg font-semibold">Price</th>
-                <th className="py-4 px-6 text-lg font-semibold">Status</th>
-                <th className="py-4 px-6 rounded-tr-2xl text-lg font-semibold text-center">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {interests.map((interest, index) => (
-                <tr
-                  key={interest._id}
-                  className="hover:bg-gray-50 transition duration-200 border-b border-gray-200"
-                >
-                  <td className="py-4 px-6 font-semibold text-gray-700">
-                    {index + 1}
-                  </td>
+        <>
+          {/* ✅ Sort control */}
+          <div className="flex justify-end mb-4">
+            <select
+              className="border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="none">Sort by Price</option>
+              <option value="lowToHigh">Low to High</option>
+              <option value="highToLow">High to Low</option>
+            </select>
+          </div>
 
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={interest.userImage}
-                        alt="Crop"
-                        className="h-14 w-14 rounded-lg object-cover shadow-sm border border-gray-200"
-                      />
-                      <span className="font-bold text-gray-800">
-                        {interest.userName}
-                      </span>
-                    </div>
-                  </td>
-
-                  <td className="py-4 px-6 text-gray-700">
-                    Wyman-Ledner
-                    <br />
-                    <span className="badge badge-ghost badge-sm mt-1">
-                      Community Specialist
-                    </span>
-                  </td>
-
-                  <td className="py-4 px-6 font-semibold text-green-700">
-                    ${interest.interest}
-                  </td>
-
-                  <td className="py-4 px-6">
-                    {interest.status === "pending" ? (
-                      <span className="bg-yellow-400 text-white px-3 py-1 rounded-lg text-sm">
-                        Pending
-                      </span>
-                    ) : (
-                      <span className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm">
-                        {interest.status}
-                      </span>
-                    )}
-                  </td>
-
-                  <td className="py-4 px-6 text-center">
-                    <button
-                      onClick={() => handleRemoveInterest(interest._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white font-medium px-5 py-2 rounded-lg shadow-sm transition"
-                    >
-                      Remove
-                    </button>
-                  </td>
+          <div className="overflow-x-auto bg-white shadow-md rounded-2xl border border-gray-200">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-green-600 text-white">
+                  <th className="py-4 px-6 rounded-tl-2xl text-lg font-semibold">
+                    SL No.
+                  </th>
+                  <th className="py-4 px-6 text-lg font-semibold">Crop</th>
+                  <th className="py-4 px-6 text-lg font-semibold">Seller</th>
+                  <th className="py-4 px-6 text-lg font-semibold">Quantity</th>
+                  <th className="py-4 px-6 text-lg font-semibold">Price</th>
+                  <th className="py-4 px-6 text-lg font-semibold">Status</th>
+                  <th className="py-4 px-6 rounded-tr-2xl text-lg font-semibold text-center">
+                    Action
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {sortedInterests.map((interest, index) => (
+                  <tr
+                    key={interest._id}
+                    className="hover:bg-gray-50 transition duration-200 border-b border-gray-200"
+                  >
+                    <td className="py-4 px-6 font-semibold text-gray-700">
+                      {index + 1}
+                    </td>
+
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={
+                            interest.crop?.image ||
+                            "https://via.placeholder.com/80"
+                          }
+                          alt="Crop"
+                          className="h-14 w-14 rounded-lg object-cover shadow-sm border border-gray-200"
+                        />
+                        <span className="font-bold text-gray-800">
+                          {interest.crop?.name || "Unknown Crop"}
+                        </span>
+                      </div>
+                    </td>
+
+                    <td className="py-4 px-6 text-gray-700">
+                      {interest.crop?.owner?.ownerName || "Unknown Seller"}
+                    </td>
+
+                    <td className="py-4 px-6 font-semibold text-gray-800">
+                      {interest.quantity || 0}
+                    </td>
+
+                    <td className="py-4 px-6 font-semibold text-green-700">
+                      ৳{interest.crop?.pricePerUnit || 0}
+                    </td>
+
+                    <td className="py-4 px-6">
+                      {interest.status === "pending" ? (
+                        <span className="bg-yellow-400 text-white px-3 py-1 rounded-lg text-sm">
+                          Pending
+                        </span>
+                      ) : (
+                        <span className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm">
+                          {interest.status}
+                        </span>
+                      )}
+                    </td>
+
+                    <td className="py-4 px-6 text-center">
+                      <button
+                        onClick={() => handleRemoveInterest(interest._id)}
+                        className="bg-red-500 hover:bg-red-600 text-white font-medium px-5 py-2 rounded-lg shadow-sm transition"
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );

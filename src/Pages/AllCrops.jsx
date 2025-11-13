@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FiSearch, FiMapPin } from "react-icons/fi";
-import { AiOutlineDollar } from "react-icons/ai";
-import { FaBoxes, FaUser, FaSeedling } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 
 const AllCrops = () => {
   const [crops, setCrops] = useState([]);
@@ -31,10 +30,14 @@ const AllCrops = () => {
     setFilteredCrops(filtered);
   }, [search, crops]);
 
+  // ✅ Custom Loading Spinner
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[60vh] text-green-700 font-semibold text-xl">
-        Loading crops...
+      <div className="flex flex-col items-center justify-center h-[70vh]">
+        <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-green-700 font-semibold text-lg animate-pulse">
+          Loading crops...
+        </p>
       </div>
     );
   }
@@ -81,7 +84,7 @@ const AllCrops = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute bottom-3 left-4">
                   <h3 className="text-white text-2xl font-semibold drop-shadow-md flex items-center gap-2">
-                     {crop.name}
+                    {crop.name}
                   </h3>
                 </div>
                 <span className="absolute top-3 right-3 bg-white/90 text-green-700 font-semibold text-sm px-3 py-1 rounded-full shadow-sm">
@@ -92,12 +95,10 @@ const AllCrops = () => {
               {/* 💰 Quick Info Bar */}
               <div className="flex items-center justify-between bg-green-50 py-3 px-5 border-b border-green-100">
                 <p className="flex items-center gap-1 text-green-700 font-semibold">
-                  
-                  {crop.pricePerUnit} / {crop.unit}
+                  ৳ {crop.pricePerUnit} / {crop.unit}
                 </p>
                 {crop.quantity && (
                   <p className="flex items-center gap-1 text-gray-700 font-medium">
-                 
                     {crop.quantity} available
                   </p>
                 )}
@@ -113,7 +114,7 @@ const AllCrops = () => {
                 <div className="flex justify-between items-center text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <FaUser className="text-green-600" />
-                    {crop.owner?.ownerName}
+                    {crop.owner?.ownerName || "Unknown Farmer"}
                   </div>
                   <p className="flex items-center gap-1">
                     <FiMapPin className="text-green-500" /> {crop.location}

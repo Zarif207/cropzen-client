@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { AuthContext } from "../Context/AuthContext";
+import { AuthContext } from "./Context/AuthContext";
 import Swal from "sweetalert2";
 import { FaArrowLeft } from "react-icons/fa";
 import { FiSend, FiX } from "react-icons/fi";
@@ -16,35 +16,31 @@ const CropDetails = () => {
   const [interests, setInterests] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(""); // ✅ new field for user bid price
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [sortOrder, setSortOrder] = useState("highToLow");
 
-  // ✅ Load crop details
   useEffect(() => {
     fetch(`http://localhost:3000/crops/${cropId}`)
       .then((res) => res.json())
-      .then((data) => {
-        setCrop(data);
-      })
+      .then((data) => setCrop(data))
       .catch((err) => console.error("Error fetching crop:", err));
   }, [cropId]);
 
-  // ✅ Load interests (from /interest) and filter by cropId
   useEffect(() => {
-    fetch("http://localhost:3000/interest")
+    if (!cropId) return;
+    fetch(`http://localhost:3000/crops/interest/${cropId}`)
       .then((res) => res.json())
       .then((data) => {
-        const cropInterests = data.filter((i) => i.cropId === cropId);
-        setInterests(cropInterests);
+        setInterests(data);
         setLoading(false);
       })
       .catch((err) => console.error("Error fetching interests:", err));
   }, [cropId]);
 
   const isOwner = user?.email === crop?.owner?.ownerEmail;
-  const totalPrice = price ? quantity * price : 0;
+  const totalPrice = price ? quantity * price : 0; // ✅ calculate based on user-set price
 
   const sortedInterests = [...interests].sort((a, b) => {
     const totalA = a.quantity * (a.price || crop.pricePerUnit);
@@ -52,7 +48,6 @@ const CropDetails = () => {
     return sortOrder === "highToLow" ? totalB - totalA : totalA - totalB;
   });
 
-  // ✅ Submit new interest
   const handleInterestSubmit = async (e) => {
     e.preventDefault();
 
@@ -71,7 +66,7 @@ const CropDetails = () => {
       userName: user.displayName,
       quantity,
       message,
-      price,
+      price, // ✅ include price in DB
       status: "pending",
     };
 
@@ -100,49 +95,19 @@ const CropDetails = () => {
       .catch((err) => console.error(err));
   };
 
-  // ✅ Accept / Reject interest (PATCH request)
   const handleStatusChange = (interestId, status) => {
     if (!isOwner) return;
-
-    fetch(`http://localhost:3000/interest/${interestId}`, {
+    fetch(`http://localhost:3000/interests/${cropId}/${interestId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        cropsId: cropId,
-        status,
-      }),
+      body: JSON.stringify({ status }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          Swal.fire("Updated!", `Interest marked as ${status}`, "success");
-
-          // ✅ Update UI instantly
-          setInterests((prev) =>
-            prev.map((i) =>
-              i._id === interestId ? { ...i, status } : i
-            )
-          );
-
-          // ✅ Reduce crop quantity in UI instantly if accepted
-          if (status === "accepted") {
-            const acceptedInterest = interests.find(
-              (i) => i._id === interestId
-            );
-            if (acceptedInterest) {
-              setCrop((prev) => ({
-                ...prev,
-                quantity: prev.quantity - acceptedInterest.quantity,
-              }));
-            }
-          }
-        } else {
-          Swal.fire("Error", "Failed to update status", "error");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        Swal.fire("Error", "Something went wrong!", "error");
+      .then(() => {
+        Swal.fire("Updated!", `Interest marked as ${status}`, "success");
+        setInterests((prev) =>
+          prev.map((i) => (i._id === interestId ? { ...i, status } : i))
+        );
       });
   };
 
@@ -164,7 +129,6 @@ const CropDetails = () => {
         </button>
       </div>
 
-      {/* 🧑‍🌾 Crop info */}
       <div className="grid md:grid-cols-2 gap-8 bg-white p-8 rounded-2xl shadow-md border border-green-100">
         <img
           src={crop.image}
@@ -196,9 +160,7 @@ const CropDetails = () => {
 
           <p className="text-gray-700 flex items-center gap-2">
             <GiFarmer className="text-green-600 text-lg" />
-            <span className="font-semibold">
-              {crop?.owner?.ownerName || "Unknown Farmer"}
-            </span>
+            <span className="font-semibold">{crop.owner?.ownerName}</span>
           </p>
 
           {!isOwner && (
@@ -242,6 +204,7 @@ const CropDetails = () => {
                 />
               </div>
 
+              {/* ✅ New Price Field */}
               <div>
                 <label className="block text-gray-600 font-medium mb-1">
                   Your Bid Price (৳ per {crop.unit})
@@ -286,7 +249,7 @@ const CropDetails = () => {
         </div>
       )}
 
-      {/* 📋 Received Interests */}
+      {/* 📋 Received Interests Section */}
       <div className="bg-white p-8 rounded-2xl shadow-md border border-green-100">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-2xl font-semibold text-green-700">
@@ -354,20 +317,16 @@ const CropDetails = () => {
                         {i.status}
                       </span>
                     </td>
-                    {isOwner && i.status === "pending" && (
+                    {isOwner && (
                       <td className="flex gap-2 justify-center py-2">
                         <button
-                          onClick={() =>
-                            handleStatusChange(i._id, "accepted")
-                          }
+                          onClick={() => handleStatusChange(i._id, "accepted")}
                           className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                         >
                           Accept
                         </button>
                         <button
-                          onClick={() =>
-                            handleStatusChange(i._id, "rejected")
-                          }
+                          onClick={() => handleStatusChange(i._id, "rejected")}
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                         >
                           Reject

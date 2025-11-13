@@ -99,7 +99,7 @@ const Navbar = () => {
           <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-green-600 flex items-center justify-center bg-white">
             {user?.photoURL ? (
               <img
-              referrerpolicy="no-referrer"
+              referrerPolicy="no-referrer"
                 src={user.photoURL}
                 alt="User Avatar"
                 className="w-full h-full object-cover"
