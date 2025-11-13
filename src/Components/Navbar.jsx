@@ -1,5 +1,5 @@
 import React, { use } from "react";
-import { Link, NavLink } from "react-router"; 
+import { Link, NavLink } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
 
 const Navbar = () => {
@@ -88,7 +88,19 @@ const Navbar = () => {
         </div>
 
         {/* Right side */}
-        <div className="navbar-end">
+        <div className="navbar-end flex items-center gap-4">
+          {user && (
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-green-600">
+              <img
+                src={
+                  user?.photoURL ||
+                  "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                }
+                alt="User Avatar"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
           {user ? (
             <button
               onClick={handleSignOut}

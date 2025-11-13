@@ -9,6 +9,7 @@ const CropDetails = () => {
   const { id: cropId } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+
   const [crop, setCrop] = useState(null);
   const [interests, setInterests] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -17,18 +18,12 @@ const CropDetails = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
-  // ✅ Fetch crop by ID
+  // ✅ Fetch crop info
   useEffect(() => {
-    const fetchCrop = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/crops/${cropId}`);
-        const data = await res.json();
-        setCrop(data);
-      } catch (err) {
-        console.error("Error fetching crop:", err);
-      }
-    };
-    fetchCrop();
+    fetch(`http://localhost:3000/crops/${cropId}`)
+      .then((res) => res.json())
+      .then((data) => setCrop(data))
+      .catch((err) => console.error("Error fetching crop:", err));
   }, [cropId]);
 
   // ✅ Fetch interests for this crop
@@ -38,7 +33,6 @@ const CropDetails = () => {
       .then((res) => res.json())
       .then((data) => {
         setInterests(data);
-        // Check if current user already interested
         if (data.some((i) => i.userEmail === user?.email)) {
           setAlreadyInterested(true);
         }
@@ -50,7 +44,7 @@ const CropDetails = () => {
   const isOwner = user?.email === crop?.owner?.ownerEmail;
   const totalPrice = quantity * crop?.pricePerUnit;
 
-  // ✅ Submit Interest
+  // ✅ Submit interest form
   const handleInterestSubmit = async (e) => {
     e.preventDefault();
 
@@ -94,8 +88,9 @@ const CropDetails = () => {
       .catch((err) => console.error(err));
   };
 
-  // ✅ Accept / Reject Interest
+  // ✅ Handle Accept/Reject (only works for owner)
   const handleStatusChange = (interestId, status) => {
+    if (!isOwner) return; // safeguard for non-owner
     fetch(`http://localhost:3000/interests/${cropId}/${interestId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -105,9 +100,7 @@ const CropDetails = () => {
       .then(() => {
         Swal.fire("Updated!", `Interest marked as ${status}`, "success");
         setInterests((prev) =>
-          prev.map((i) =>
-            i._id === interestId ? { ...i, status } : i
-          )
+          prev.map((i) => (i._id === interestId ? { ...i, status } : i))
         );
       });
   };
@@ -131,7 +124,7 @@ const CropDetails = () => {
         </button>
       </div>
 
-      {/* 🌾 Crop Info */}
+      {/* 🌾 Crop Details */}
       <div className="grid md:grid-cols-2 gap-8 bg-white p-8 rounded-2xl shadow-md border border-green-100">
         <img
           src={crop.image}
@@ -238,46 +231,53 @@ const CropDetails = () => {
         </div>
       )}
 
-      {/* 👨‍🌾 Received Interests Table (Owner Only) */}
-      {isOwner && (
-        <div className="bg-white p-8 rounded-2xl shadow-md border border-green-100">
-          <h3 className="text-2xl font-semibold text-green-700 mb-4">
-            Received Interests ({interests.length})
-          </h3>
+      {/* 👀 Always show interest table */}
+      <div className="bg-white p-8 rounded-2xl shadow-md border border-green-100">
+        <h3 className="text-2xl font-semibold text-green-700 mb-4">
+          Received Interests ({interests.length})
+        </h3>
 
-          {interests.length === 0 ? (
-            <p className="text-gray-500">No interests yet for this crop.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full border text-left">
-                <thead className="bg-green-50 text-green-700">
-                  <tr>
-                    <th className="px-4 py-2">Buyer Name</th>
-                    <th className="px-4 py-2">Quantity</th>
-                    <th className="px-4 py-2">Message</th>
-                    <th className="px-4 py-2">Status</th>
-                    <th className="px-4 py-2 text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {interests.map((i) => (
-                    <tr key={i._id} className="hover:bg-gray-50 border-t">
-                      <td className="px-4 py-2">{i.userName}</td>
-                      <td className="px-4 py-2">{i.quantity}</td>
-                      <td className="px-4 py-2">{i.message}</td>
-                      <td className="px-4 py-2">
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                            i.status === "accepted"
-                              ? "bg-green-100 text-green-700"
-                              : i.status === "rejected"
-                              ? "bg-red-100 text-red-600"
-                              : "bg-yellow-100 text-yellow-700"
-                          }`}
-                        >
-                          {i.status}
-                        </span>
-                      </td>
+        <div className="overflow-x-auto">
+          <table className="w-full border text-left">
+            <thead className="bg-green-50 text-green-700">
+              <tr>
+                <th className="px-4 py-2">Buyer Name</th>
+                <th className="px-4 py-2">Quantity</th>
+                <th className="px-4 py-2">Message</th>
+                <th className="px-4 py-2">Status</th>
+                {isOwner && <th className="px-4 py-2 text-center">Actions</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {interests.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={isOwner ? 5 : 4}
+                    className="text-center text-gray-500 py-6 italic"
+                  >
+                    No interests yet for this crop.
+                  </td>
+                </tr>
+              ) : (
+                interests.map((i) => (
+                  <tr key={i._id} className="hover:bg-gray-50 border-t">
+                    <td className="px-4 py-2">{i.userName}</td>
+                    <td className="px-4 py-2">{i.quantity}</td>
+                    <td className="px-4 py-2">{i.message}</td>
+                    <td className="px-4 py-2">
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          i.status === "accepted"
+                            ? "bg-green-100 text-green-700"
+                            : i.status === "rejected"
+                            ? "bg-red-100 text-red-600"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {i.status}
+                      </span>
+                    </td>
+                    {isOwner && (
                       <td className="flex gap-2 justify-center py-2">
                         <button
                           onClick={() => handleStatusChange(i._id, "accepted")}
@@ -292,14 +292,14 @@ const CropDetails = () => {
                           Reject
                         </button>
                       </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                    )}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
     </div>
   );
 };
