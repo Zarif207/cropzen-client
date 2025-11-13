@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { FiSearch } from "react-icons/fi"; // ✅ Feather Search icon
+import { FiSearch } from "react-icons/fi";
 import { AiOutlineDollar } from "react-icons/ai";
+import { FaBoxes, FaUser } from "react-icons/fa";
 
 const AllCrops = () => {
   const [crops, setCrops] = useState([]);
@@ -56,41 +57,67 @@ const AllCrops = () => {
         </div>
       </div>
 
-      {/* 🌱 Crop Cards Grid */}
+      {/* 🌱 Crop Cards */}
       {filteredCrops.length === 0 ? (
         <div className="text-center text-gray-600 text-lg mt-16">
-          ❌ No results found for "
-          <span className="font-semibold">{search}</span>"
+          ❌ No results found for "<span className="font-semibold">{search}</span>"
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCrops.map((crop) => (
             <div
               key={crop._id}
-              className="bg-white rounded-2xl shadow-lg border border-green-100 
+              className="relative bg-white rounded-2xl shadow-lg border border-green-100 
                          overflow-hidden hover:shadow-2xl transition-transform duration-300 
                          hover:-translate-y-1"
             >
+              {/* Type Badge */}
+              <span className="absolute top-3 right-3 bg-green-100 text-green-700 text-sm font-semibold px-3 py-1 rounded-full shadow-sm">
+                {crop.type}
+              </span>
+
               <img
                 src={crop.image}
                 alt={crop.name}
                 className="h-52 w-full object-cover"
               />
+
               <div className="p-5 space-y-2">
                 <h3 className="text-xl font-semibold text-green-700">
                   {crop.name}
                 </h3>
-                <p className="text-gray-500 text-sm">{crop.type}</p>
-                <p className="text-gray-700">
-                  <span className="font-semibold">
-                    {crop.pricePerUnit}
-                  </span> / {crop.unit}
+
+                {/* 💰 Price */}
+                <p className="text-gray-700 flex items-center gap-1">
+                  <AiOutlineDollar className="text-green-600" />
+                  <span className="font-semibold">{crop.pricePerUnit}</span> / {crop.unit}
                 </p>
+
+                {/* 📦 Quantity */}
+                {crop.quantity && (
+                  <p className="text-gray-700 flex items-center gap-2">
+                    <FaBoxes className="text-yellow-500" />
+                    <span className="font-medium">{crop.quantity}</span> available
+                  </p>
+                )}
+
+                {/* 👤 Owner Name */}
+                {crop.owner?.ownerName && (
+                  <p className="text-gray-600 text-sm flex items-center gap-2">
+                    <FaUser className="text-green-600" />
+                    {crop.owner.ownerName}
+                  </p>
+                )}
+
+                {/* 📝 Description */}
                 <p className="text-gray-600 text-sm line-clamp-2">
                   {crop.description}
                 </p>
+
+                {/* 📍 Location */}
                 <p className="text-sm text-gray-500">📍 {crop.location}</p>
 
+                {/* 🔗 Details Button */}
                 <div className="pt-3">
                   <Link
                     to={`/cropDetails/${crop._id}`}
