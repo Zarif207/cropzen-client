@@ -21,7 +21,7 @@ const AllCrops = () => {
       .catch((err) => console.error("Error fetching crops:", err));
   }, []);
 
-  // ✅ Search filter
+  
   useEffect(() => {
     const lowerSearch = search.toLowerCase();
     const filtered = crops.filter((crop) =>
