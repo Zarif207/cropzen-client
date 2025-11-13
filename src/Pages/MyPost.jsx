@@ -81,12 +81,12 @@ const MyPost = () => {
       </h2>
 
       {myCrops.length === 0 ? (
-        <p className="text-center text-gray-500 py-10">
+        <p className="text-center text-gray-500 py-10 my-50">
           You haven't added any crops yet.
         </p>
       ) : (
-        <div className="overflow-x-auto bg-white shadow-lg rounded-2xl border border-gray-100 justify-center items-center">
-          <table className="table w-full">
+        <div className="overflow-x-auto bg-white shadow-lg rounded-2xl border border-gray-100 my-25">
+          <table className="table w-full text-center">
             <thead className="bg-green-600 text-white">
               <tr>
                 <th className="pl-12">Crop</th>
@@ -109,7 +109,7 @@ const MyPost = () => {
                     <img
                       src={crop.image}
                       alt={crop.name}
-                      className="w-25 h-18 rounded-lg object-cover"
+                      className="w-25 h-18 rounded-lg object-cover mx-auto"
                     />
                   </td>
                   <td>{crop.name}</td>
@@ -118,22 +118,24 @@ const MyPost = () => {
                   <td>{crop.unit}</td>
                   <td>{crop.quantity}</td>
                   <td>{crop.location}</td>
-                  <td className="flex gap-2 justify- items-center">
-                    <button
-                      onClick={() => {
-                        setSelectedCrop(crop);
-                        document.getElementById("editModal").showModal();
-                      }}
-                      className="btn btn-sm bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(crop._id)}
-                      className="btn btn-sm bg-red-500 hover:bg-red-600 text-white"
-                    >
-                      Delete 
-                    </button>
+                  <td>
+                    <div className="flex justify-center items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setSelectedCrop(crop);
+                          document.getElementById("editModal").showModal();
+                        }}
+                        className="btn btn-sm bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(crop._id)}
+                        className="btn btn-sm bg-red-500 hover:bg-red-600 text-white"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

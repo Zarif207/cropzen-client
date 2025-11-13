@@ -65,7 +65,7 @@ const MyInterests = () => {
       </div>
 
       {interests.length === 0 ? (
-        <div className="text-center text-gray-500 text-lg">
+        <div className="text-center text-gray-500 text-lg my-50">
           You haven't shown interest in any crops yet.
         </div>
       ) : (
