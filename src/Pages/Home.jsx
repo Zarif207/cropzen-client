@@ -6,6 +6,7 @@ import LatestCrops from "../Components/LatestCrops";
 import Specialists from "../Components/Specialists";
 import ExtraComp from "../Components/ExtraComp";
 import ExtraComp2 from "../Components/ExtraComp2";
+import WebBlogs from "../Components/WebBlogs";
 
 const Home = () => {
   const latestCropsPromise = fetch(
@@ -19,6 +20,7 @@ const Home = () => {
       <Procedure />
       <ExtraComp2 />
       <Specialists />
+      <WebBlogs/>
       <ExtraComp />
     </div>
   );

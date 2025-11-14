@@ -5,7 +5,8 @@ import Swal from "sweetalert2";
 const MyInterests = () => {
   const { user } = useContext(AuthContext);
   const [interests, setInterests] = useState([]);
-  const [sortOrder, setSortOrder] = useState("none"); // ✅ new
+  const [sortOrder, setSortOrder] = useState("none");
+  const [loading, setLoading] = useState(true); // ⬅ Added
 
   useEffect(() => {
     if (user?.email) {
@@ -26,12 +27,16 @@ const MyInterests = () => {
             })
           );
           setInterests(enrichedData);
+          setLoading(false); // ⬅ Stop loading
         })
-        .catch((err) => console.error("Error fetching interests:", err));
+        .catch((err) => {
+          console.error("Error fetching interests:", err);
+          setLoading(false);
+        });
     }
   }, [user?.email]);
 
-  // ✅ Sorting logic
+  // ⬅ Sorting logic
   const sortedInterests = [...interests].sort((a, b) => {
     const priceA = a.crop?.pricePerUnit || 0;
     const priceB = b.crop?.pricePerUnit || 0;
@@ -40,6 +45,7 @@ const MyInterests = () => {
     return 0;
   });
 
+  // ⬅ Remove interest
   const handleRemoveInterest = (_id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -70,6 +76,18 @@ const MyInterests = () => {
     });
   };
 
+  // ✅ LOADING SPINNER UI
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh]">
+        <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-green-700 font-semibold text-lg animate-pulse">
+          Loading your interests...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
       <div className="text-center mb-10">
@@ -89,7 +107,7 @@ const MyInterests = () => {
         </div>
       ) : (
         <>
-          {/* ✅ Sort control */}
+          {/* Sort Dropdown */}
           <div className="flex justify-end mb-4">
             <select
               className="border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -119,6 +137,7 @@ const MyInterests = () => {
                   </th>
                 </tr>
               </thead>
+
               <tbody>
                 {sortedInterests.map((interest, index) => (
                   <tr
@@ -180,6 +199,7 @@ const MyInterests = () => {
                   </tr>
                 ))}
               </tbody>
+
             </table>
           </div>
         </>

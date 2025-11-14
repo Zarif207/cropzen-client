@@ -21,22 +21,20 @@ const CropDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const [sortOrder, setSortOrder] = useState("highToLow");
 
-  // ✅ Load crop details
+  // Load crop
   useEffect(() => {
     fetch(`https://cropzen.vercel.app/crops/${cropId}`)
       .then((res) => res.json())
-      .then((data) => {
-        setCrop(data);
-      })
+      .then((data) => setCrop(data))
       .catch((err) => console.error("Error fetching crop:", err));
   }, [cropId]);
 
-  // ✅ Load interests (from /interest) and filter by cropId
+  // Load interests
   useEffect(() => {
     fetch("https://cropzen.vercel.app/interest")
       .then((res) => res.json())
       .then((data) => {
-        const cropInterests = data.filter((i) => i.cropId === cropId);
+        const cropInterests = data?.filter((i) => i?.cropId === cropId) || [];
         setInterests(cropInterests);
         setLoading(false);
       })
@@ -46,13 +44,14 @@ const CropDetails = () => {
   const isOwner = user?.email === crop?.owner?.ownerEmail;
   const totalPrice = price ? quantity * price : 0;
 
-  const sortedInterests = [...interests].sort((a, b) => {
-    const totalA = a.quantity * (a.price || crop.pricePerUnit);
-    const totalB = b.quantity * (b.price || crop.pricePerUnit);
+  const sortedInterests = [...(interests || [])].sort((a, b) => {
+    const totalA = (a?.quantity || 0) * (a?.price || crop?.pricePerUnit || 0);
+    const totalB = (b?.quantity || 0) * (b?.price || crop?.pricePerUnit || 0);
+
     return sortOrder === "highToLow" ? totalB - totalA : totalA - totalB;
   });
 
-  // ✅ Submit new interest
+  // Handle submit interest
   const handleInterestSubmit = async (e) => {
     e.preventDefault();
 
@@ -67,8 +66,8 @@ const CropDetails = () => {
 
     const interestData = {
       cropId,
-      userEmail: user.email,
-      userName: user.displayName,
+      userEmail: user?.email,
+      userName: user?.displayName,
       quantity,
       message,
       price,
@@ -77,7 +76,7 @@ const CropDetails = () => {
 
     const confirm = await Swal.fire({
       title: "Confirm Your Bid?",
-      text: `You're offering ${price}৳ per ${crop.unit} for ${quantity} ${crop.unit} (Total: ${totalPrice}৳)`,
+      text: `You're offering ${price}৳ per ${crop?.unit} for ${quantity} ${crop?.unit} (Total: ${totalPrice}৳)`,
       icon: "question",
       showCancelButton: true,
       confirmButtonText: "Yes, Submit!",
@@ -94,43 +93,38 @@ const CropDetails = () => {
       .then((res) => res.json())
       .then(() => {
         Swal.fire("Success!", "Interest submitted successfully!", "success");
-        setInterests((prev) => [...prev, interestData]);
+        setInterests((prev) => [...(prev || []), interestData]);
         setShowModal(false);
       })
       .catch((err) => console.error(err));
   };
 
-  // ✅ Accept / Reject interest (PATCH request)
+  // Accept / Reject
   const handleStatusChange = (interestId, status) => {
     if (!isOwner) return;
 
     fetch(`https://cropzen.vercel.app/interest/${interestId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        cropsId: cropId,
-        status,
-      }),
+      body: JSON.stringify({ cropsId: cropId, status }),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.success) {
+        if (data?.success) {
           Swal.fire("Updated!", `Interest marked as ${status}`, "success");
 
-          // ✅ Update UI instantly
           setInterests((prev) =>
-            prev.map((i) => (i._id === interestId ? { ...i, status } : i))
+            prev?.map((i) => (i?._id === interestId ? { ...i, status } : i))
           );
 
-          // ✅ Reduce crop quantity in UI instantly if accepted
           if (status === "accepted") {
-            const acceptedInterest = interests.find(
-              (i) => i._id === interestId
+            const acceptedInterest = interests?.find(
+              (i) => i?._id === interestId
             );
             if (acceptedInterest) {
               setCrop((prev) => ({
                 ...prev,
-                quantity: prev.quantity - acceptedInterest.quantity,
+                quantity: (prev?.quantity || 0) - (acceptedInterest?.quantity || 0),
               }));
             }
           }
@@ -162,34 +156,36 @@ const CropDetails = () => {
         </button>
       </div>
 
-      {/* 🧑‍🌾 Crop info */}
+      {/* Crop Info */}
       <div className="grid md:grid-cols-2 gap-8 bg-white p-8 rounded-2xl shadow-md border border-green-100">
         <img
-          src={crop.image}
-          alt={crop.name}
+          src={crop?.image}
+          alt={crop?.name}
           className="rounded-xl w-full max-h-[400px] object-cover shadow-md"
         />
 
         <div className="space-y-4">
           <div className="flex justify-between items-start">
-            <h2 className="text-3xl font-bold text-green-700">{crop.name}</h2>
+            <h2 className="text-3xl font-bold text-green-700">{crop?.name}</h2>
             <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
-              {crop.type}
+              {crop?.type}
             </span>
           </div>
 
-          <p className="text-gray-600 leading-relaxed">{crop.description}</p>
+          <p className="text-gray-600 leading-relaxed">{crop?.description}</p>
 
           <div className="flex items-center gap-4">
             <p className="text-xl font-semibold text-green-600">
-              ৳ {crop.pricePerUnit} / {crop.unit}
+              ৳ {crop?.pricePerUnit} / {crop?.unit}
             </p>
-            <p className="text-gray-500">Available: {crop.quantity}</p>
+            <p className="text-gray-500">
+              Available: {crop?.quantity ?? "N/A"}
+            </p>
           </div>
 
           <p className="text-gray-700 font-medium flex items-center gap-2">
             <IoLocationSharp className="text-red-600 text-lg" />
-            {crop.location}
+            {crop?.location}
           </p>
 
           <p className="text-gray-700 flex items-center gap-2">
@@ -210,7 +206,7 @@ const CropDetails = () => {
         </div>
       </div>
 
-      {/* 💬 Interest Modal */}
+      {/* Interest Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 relative">
@@ -228,7 +224,7 @@ const CropDetails = () => {
             <form onSubmit={handleInterestSubmit} className="space-y-5">
               <div>
                 <label className="block text-gray-600 font-medium mb-1">
-                  Quantity ({crop.unit})
+                  Quantity ({crop?.unit})
                 </label>
                 <input
                   type="number"
@@ -242,7 +238,7 @@ const CropDetails = () => {
 
               <div>
                 <label className="block text-gray-600 font-medium mb-1">
-                  Your Bid Price (৳ per {crop.unit})
+                  Your Bid Price (৳ per {crop?.unit})
                 </label>
                 <input
                   type="number"
@@ -284,14 +280,14 @@ const CropDetails = () => {
         </div>
       )}
 
-      {/* 📋 Received Interests */}
+      {/* Received Interests */}
       <div className="bg-white p-8 rounded-2xl shadow-md border border-green-100">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-2xl font-semibold text-green-700">
-            Received Interests ({interests.length})
+            Received Interests ({interests?.length || 0})
           </h3>
 
-          {interests.length > 0 && (
+          {(interests?.length || 0) > 0 && (
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
@@ -317,7 +313,7 @@ const CropDetails = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedInterests.length === 0 ? (
+              {sortedInterests?.length === 0 ? (
                 <tr>
                   <td
                     colSpan={isOwner ? 7 : 6}
@@ -327,41 +323,42 @@ const CropDetails = () => {
                   </td>
                 </tr>
               ) : (
-                sortedInterests.map((i) => (
+                sortedInterests?.map((i) => (
                   <tr
-                    key={i._id || Math.random()}
+                    key={i?._id || Math.random()}
                     className="hover:bg-gray-50 border-t border-gray-200"
                   >
-                    <td className="px-4 py-2">{i.userName}</td>
-                    <td className="px-4 py-2">{i.quantity}</td>
-                    <td className="px-4 py-2">{i.price}</td>
+                    <td className="px-4 py-2">{i?.userName}</td>
+                    <td className="px-4 py-2">{i?.quantity}</td>
+                    <td className="px-4 py-2">{i?.price}</td>
                     <td className="px-4 py-2 font-medium text-green-600">
-                      ৳ {i.quantity * (i.price || crop.pricePerUnit)}
+                      ৳ {(i?.quantity || 0) * (i?.price || crop?.pricePerUnit || 0)}
                     </td>
-                    <td className="px-4 py-2">{i.message}</td>
+                    <td className="px-4 py-2">{i?.message}</td>
                     <td className="px-4 py-2">
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                          i.status === "accepted"
+                          i?.status === "accepted"
                             ? "bg-green-100 text-green-700"
-                            : i.status === "rejected"
+                            : i?.status === "rejected"
                             ? "bg-red-100 text-red-600"
                             : "bg-yellow-100 text-yellow-700"
                         }`}
                       >
-                        {i.status}
+                        {i?.status}
                       </span>
                     </td>
-                    {isOwner && i.status === "pending" && (
+
+                    {isOwner && i?.status === "pending" && (
                       <td className="flex gap-2 justify-center py-2">
                         <button
-                          onClick={() => handleStatusChange(i._id, "accepted")}
+                          onClick={() => handleStatusChange(i?._id, "accepted")}
                           className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                         >
                           Accept
                         </button>
                         <button
-                          onClick={() => handleStatusChange(i._id, "rejected")}
+                          onClick={() => handleStatusChange(i?._id, "rejected")}
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                         >
                           Reject

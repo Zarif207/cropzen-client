@@ -6,18 +6,37 @@ const MyPost = () => {
   const { user } = useContext(AuthContext);
   const [myCrops, setMyCrops] = useState([]);
   const [selectedCrop, setSelectedCrop] = useState(null);
+  const [loading, setLoading] = useState(true); // 🔥 LOADING STATE
 
-  // ✅ Fetch only user's crops
+  // Fetch user's crops
   useEffect(() => {
     if (user?.email) {
       fetch(`https://cropzen.vercel.app/crops?email=${user.email}`)
         .then((res) => res.json())
-        .then((data) => setMyCrops(data))
-        .catch((err) => console.error("Error fetching crops:", err));
+        .then((data) => {
+          setMyCrops(data);
+          setLoading(false); // 🔥 STOP LOADING
+        })
+        .catch((err) => {
+          console.error("Error fetching crops:", err);
+          setLoading(false); // even on error stop loader
+        });
     }
   }, [user?.email]);
 
-  // 🗑 Delete crop
+  // Show loader while fetching
+  if (loading) {
+  return (
+    <div className="flex flex-col items-center justify-center h-[70vh]">
+      <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className="mt-4 text-green-700 font-semibold text-lg animate-pulse">
+        Loading your posts...
+      </p>
+    </div>
+  );
+}
+
+  // Delete crop
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -41,7 +60,7 @@ const MyPost = () => {
     });
   };
 
-  // ✏️ Handle Edit (PATCH)
+  // Edit submit
   const handleEditSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -144,7 +163,7 @@ const MyPost = () => {
         </div>
       )}
 
-      {/* ✏️ Edit Modal */}
+      {/* Edit Modal */}
       <dialog id="editModal" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box rounded-2xl">
           <h3 className="font-bold text-lg text-green-700 mb-4">
