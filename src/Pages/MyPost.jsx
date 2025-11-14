@@ -26,15 +26,15 @@ const MyPost = () => {
 
   // Show loader while fetching
   if (loading) {
-  return (
-    <div className="flex flex-col items-center justify-center h-[70vh]">
-      <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-      <p className="mt-4 text-green-700 font-semibold text-lg animate-pulse">
-        Loading your posts...
-      </p>
-    </div>
-  );
-}
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh]">
+        <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-green-700 font-semibold text-lg animate-pulse">
+          Loading your posts...
+        </p>
+      </div>
+    );
+  }
 
   // Delete crop
   const handleDelete = (id) => {
@@ -94,15 +94,25 @@ const MyPost = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6 my-15">
       <h2 className="text-3xl font-bold text-green-700 mb-6 text-center">
         My Crop Posts
       </h2>
 
       {myCrops.length === 0 ? (
-        <p className="text-center text-gray-500 py-10 my-50">
-          You haven't added any crops yet.
-        </p>
+        <div className="text-center py-16">
+          <p className="text-gray-500 text-lg mb-4">
+            You haven't added any crops yet.
+          </p>
+
+          <a
+            href="/addcrops"
+            className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg 
+                 hover:bg-green-700 transition-all duration-300"
+          >
+            Add Your First Crop
+          </a>
+        </div>
       ) : (
         <div className="overflow-x-auto bg-white shadow-lg rounded-2xl border border-gray-100 my-25">
           <table className="table w-full text-center">

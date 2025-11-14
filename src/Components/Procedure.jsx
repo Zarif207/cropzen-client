@@ -40,7 +40,7 @@ const steps = [
 
 const Procedure = () => {
   return (
-    <section className="relative py-24 bg-[#f9f8f3] overflow-hidden">
+    <section className="relative py-24 bg-[#fffef4] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 text-center">
         <motion.p
           initial={{ opacity: 0, y: 20 }}

@@ -3,11 +3,20 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
-import { FaUserAlt, FaEnvelope, FaLock, FaImage } from "react-icons/fa";
+import {
+  FaUserAlt,
+  FaEnvelope,
+  FaLock,
+  FaImage,
+  FaEyeSlash,
+  FaEye,
+} from "react-icons/fa";
 
 const Register = () => {
   const { createUser, updateUserProfile, signInWithGoogle } =
     useContext(AuthContext);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -150,15 +159,26 @@ const Register = () => {
             <label className="block text-gray-700 font-medium mb-1">
               Password
             </label>
-            <div className="flex items-center border border-gray-300 rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-green-400">
+
+            <div className="flex items-center border border-gray-300 rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-green-400 relative">
               <FaLock className="text-gray-500 mr-2" />
+
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="********"
                 className="w-full outline-none"
               />
+
+              {/* Eye Toggle */}
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 cursor-pointer text-gray-600"
+              >
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
+              </span>
             </div>
+
             {passwordError && (
               <p className="text-red-500 text-sm mt-2">{passwordError}</p>
             )}
@@ -175,9 +195,9 @@ const Register = () => {
 
         {/* OR Divider */}
         <div className="flex items-center my-6">
-          <hr className="flex-grow border-gray-300" />
+          <hr className="grow border-gray-300" />
           <span className="mx-4 text-gray-500">OR</span>
-          <hr className="flex-grow border-gray-300" />
+          <hr className="grow border-gray-300" />
         </div>
 
         {/* Google */}

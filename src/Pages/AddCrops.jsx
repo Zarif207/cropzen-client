@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-// import { useNavigate } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
@@ -8,8 +7,21 @@ const AddCrops = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  // Page entry loading
+  const [pageLoading, setPageLoading] = useState(true);
+
+  // Form submit loading
+  const [loading, setLoading] = useState(false);
+
+  // Simulate page loading for smooth UI
+  useEffect(() => {
+    const timer = setTimeout(() => setPageLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleAddCrop = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const form = e.target;
     const name = form.name.value;
@@ -43,6 +55,8 @@ const AddCrops = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false);
+
         if (data.insertedId) {
           Swal.fire({
             title: "Crop Added Successfully!",
@@ -55,12 +69,25 @@ const AddCrops = () => {
       });
   };
 
+  // Page entry loading UI
+   if (pageLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh]">
+        <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-green-700 font-semibold text-lg animate-pulse">
+          Loading your Post Form
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-5xl mx-auto p-8">
       <div className="bg-white shadow-lg rounded-2xl p-8 border border-gray-100">
         <h2 className="text-3xl font-bold text-green-700 mb-6 text-center">
           Add New Crop
         </h2>
+
         <form
           onSubmit={handleAddCrop}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -155,7 +182,7 @@ const AddCrops = () => {
             />
           </div>
 
-          {/* Image URL */}
+          {/* Image */}
           <div className="form-control md:col-span-2">
             <label className="label font-medium text-gray-700">Image URL</label>
             <input
@@ -185,9 +212,14 @@ const AddCrops = () => {
           <div className="md:col-span-2">
             <button
               type="submit"
-              className="btn bg-[#00ac41] text-white w-full hover:from-green-700 hover:to-lime-600 mt-4"
+              className="btn bg-[#00ac41] text-white w-full mt-4"
+              disabled={loading}
             >
-              Add Crop
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Add Crop"
+              )}
             </button>
           </div>
         </form>

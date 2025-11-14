@@ -2,11 +2,13 @@ import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 import { FcGoogle } from "react-icons/fc";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Swal from "sweetalert2";
 
 const Login = () => {
   const { signInUser, signInWithGoogle } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👁️ show/hide toggle
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -89,17 +91,34 @@ const Login = () => {
             />
           </div>
 
-          <div>
+          {/* PASSWORD INPUT WITH SHOW/HIDE */}
+          <div className="relative">
             <label className="block text-gray-700 font-medium mb-1">
               Password
             </label>
+
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Enter your password"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
+
+            {/* Eye Icon */}
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-[52px] transform -translate-y-1/2 cursor-pointer text-gray-600"
+            >
+              {showPassword ? (
+                
+                <AiFillEye size={22} />
+              ) : (
+                <AiFillEyeInvisible size={22} />
+                
+              )}
+            </span>
+
             <div className="text-right mt-2">
               <Link
                 to="/auth/forgot-password"
@@ -137,7 +156,9 @@ const Login = () => {
           className="w-full border border-gray-300 hover:border-green-400 rounded-lg py-3 flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-md"
         >
           <FcGoogle className="text-2xl" />
-          <span className="text-gray-700 font-medium">Login with Google</span>
+          <span className="text-gray-700 font-medium">
+            Login with Google
+          </span>
         </button>
 
         <p className="text-center text-gray-600 mt-6">

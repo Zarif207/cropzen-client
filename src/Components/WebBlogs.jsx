@@ -98,7 +98,7 @@ const WebBlogs = () => {
 
         {/* RIGHT SIDE IMAGE */}
         {/* RIGHT SIDE IMAGE */}
-<div className="md:-mr-20 lg:-mr-32 xl:-mr-40">
+<div className="md:-mr-20 lg:-mr-30 xl:-mr-29">
   <img
     src={farmerImg}
     alt="Farmer"

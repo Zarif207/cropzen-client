@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const BlogsSection = () => {
   return (
-    <section className="py-24 bg-[#fdfdfd] relative overflow-hidden mt-10">
+    <section className="py-24 bg-[#f5f1f1] relative overflow-hidden mt-10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
         {/* Left Side Images */}
         <div className="relative lg:w-1/2 w-full">

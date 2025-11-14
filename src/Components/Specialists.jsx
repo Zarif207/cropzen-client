@@ -33,7 +33,7 @@ const Specialists = () => {
   ];
 
   return (
-    <div className="py-20 bg-white text-center">
+    <div className="py-20 bg-[#d8d8d8aa] text-center">
       {/* Header */}
       <p className="text-gray-500 mb-2 text-sm tracking-wide">
         They work Relentlessly
