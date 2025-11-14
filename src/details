@@ -22,7 +22,7 @@ const CropDetails = () => {
   const [sortOrder, setSortOrder] = useState("highToLow");
 
   useEffect(() => {
-    fetch(`http://localhost:3000/crops/${cropId}`)
+    fetch(`https://cropzen.vercel.app/crops/${cropId}`)
       .then((res) => res.json())
       .then((data) => setCrop(data))
       .catch((err) => console.error("Error fetching crop:", err));
@@ -30,7 +30,7 @@ const CropDetails = () => {
 
   useEffect(() => {
     if (!cropId) return;
-    fetch(`http://localhost:3000/crops/interest/${cropId}`)
+    fetch(`https://cropzen.vercel.app/crops/interest/${cropId}`)
       .then((res) => res.json())
       .then((data) => {
         setInterests(data);
@@ -81,7 +81,7 @@ const CropDetails = () => {
 
     if (!confirm.isConfirmed) return;
 
-    fetch("http://localhost:3000/interest", {
+    fetch("https://cropzen.vercel.app/interest", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(interestData),
@@ -97,7 +97,7 @@ const CropDetails = () => {
 
   const handleStatusChange = (interestId, status) => {
     if (!isOwner) return;
-    fetch(`http://localhost:3000/interests/${cropId}/${interestId}`, {
+    fetch(`https://cropzen.vercel.app/interests/${cropId}/${interestId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),

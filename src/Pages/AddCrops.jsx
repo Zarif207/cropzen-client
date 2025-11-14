@@ -36,7 +36,7 @@ const AddCrops = () => {
       },
     };
 
-    fetch("http://localhost:3000/crops", {
+    fetch("https://cropzen.vercel.app/crops", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(newCrop),
@@ -61,7 +61,10 @@ const AddCrops = () => {
         <h2 className="text-3xl font-bold text-green-700 mb-6 text-center">
           Add New Crop
         </h2>
-        <form onSubmit={handleAddCrop} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form
+          onSubmit={handleAddCrop}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
           {/* Crop Name */}
           <div className="form-control">
             <label className="label font-medium text-gray-700">Crop Name</label>
@@ -75,28 +78,30 @@ const AddCrops = () => {
           </div>
 
           {/* Type */}
-<div className="form-control">
-  <label className="label font-medium text-gray-700">Type</label>
-  <select
-    name="type"
-    className="select select-bordered w-full"
-    required
-    defaultValue=""
-  >
-    <option value="" disabled>
-      Select Type
-    </option>
-    <option value="Vegetable">Vegetable</option>
-    <option value="Fruit">Fruit</option>
-    <option value="Grain">Grain</option>
-    <option value="Pulse">Pulse</option>
-    <option value="Other">Other</option>
-  </select>
-</div>
+          <div className="form-control">
+            <label className="label font-medium text-gray-700">Type</label>
+            <select
+              name="type"
+              className="select select-bordered w-full"
+              required
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select Type
+              </option>
+              <option value="Vegetable">Vegetable</option>
+              <option value="Fruit">Fruit</option>
+              <option value="Grain">Grain</option>
+              <option value="Pulse">Pulse</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
           {/* Price per unit */}
           <div className="form-control">
-            <label className="label font-medium text-gray-700">Price per Unit (৳)</label>
+            <label className="label font-medium text-gray-700">
+              Price per Unit (৳)
+            </label>
             <input
               type="number"
               name="pricePerUnit"
@@ -106,27 +111,29 @@ const AddCrops = () => {
             />
           </div>
 
-         {/* Unit */}
-<div className="form-control">
-  <label className="label font-medium text-gray-700">Unit</label>
-  <select
-    name="unit"
-    className="select select-bordered w-full"
-    required
-    defaultValue=""
-  >
-    <option value="" disabled>
-      Select Unit
-    </option>
-    <option value="kg">kg</option>
-    <option value="ton">ton</option>
-    <option value="bag">bag</option>
-  </select>
-</div>
+          {/* Unit */}
+          <div className="form-control">
+            <label className="label font-medium text-gray-700">Unit</label>
+            <select
+              name="unit"
+              className="select select-bordered w-full"
+              required
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select Unit
+              </option>
+              <option value="kg">kg</option>
+              <option value="ton">ton</option>
+              <option value="bag">bag</option>
+            </select>
+          </div>
 
           {/* Quantity */}
           <div className="form-control">
-            <label className="label font-medium text-gray-700">Estimated Quantity</label>
+            <label className="label font-medium text-gray-700">
+              Estimated Quantity
+            </label>
             <input
               type="number"
               name="quantity"
@@ -162,7 +169,9 @@ const AddCrops = () => {
 
           {/* Description */}
           <div className="form-control md:col-span-2">
-            <label className="label font-medium text-gray-700">Description</label>
+            <label className="label font-medium text-gray-700">
+              Description
+            </label>
             <textarea
               name="description"
               className="textarea textarea-bordered w-full"

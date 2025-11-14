@@ -1,13 +1,15 @@
-import React, { use } from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
-import { FaUserCircle } from "react-icons/fa"; // 👈 default user icon
+import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
-  const { user, signOutUser } = use(AuthContext);
+  const { user, signOutUser } = useContext(AuthContext);
 
   const handleSignOut = () => {
-    signOutUser().then().catch();
+    signOutUser()
+      .then(() => {})
+      .catch((err) => console.error(err));
   };
 
   const linkClass = ({ isActive }) =>
@@ -17,46 +19,12 @@ const Navbar = () => {
         : "text-gray-700 hover:text-green-600"
     }`;
 
-  const links = (
-    <>
-      <li>
-        <NavLink to="/" className={linkClass}>
-          Home
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/allCrops" className={linkClass}>
-          All Crops
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/addCrops" className={linkClass}>
-          Add Crops
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/myPosts" className={linkClass}>
-          My Posts
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/myInterests" className={linkClass}>
-          My Interests
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/myProfile" className={linkClass}>
-          My Profile
-        </NavLink>
-      </li>
-    </>
-  );
-
   return (
     <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
       <div className="navbar max-w-7xl mx-auto px-4 py-3">
         {/* Left side */}
         <div className="navbar-start">
+          {/* Mobile Menu */}
           <div className="dropdown lg:hidden">
             <div tabIndex={0} role="button" className="btn btn-ghost">
               <svg
@@ -78,28 +46,109 @@ const Navbar = () => {
               tabIndex="-1"
               className="menu menu-sm dropdown-content bg-white rounded-lg shadow-md mt-3 w-52 p-2 border border-gray-100"
             >
-              {links}
+              <li>
+                <NavLink to="/" className={linkClass}>
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/allCrops" className={linkClass}>
+                  All Crops
+                </NavLink>
+              </li>
+
+              {user && (
+                <>
+                  <li>
+                    <NavLink to="/addCrops" className={linkClass}>
+                      Add Crops
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/myPosts" className={linkClass}>
+                      My Posts
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/myInterests" className={linkClass}>
+                      My Interests
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/myProfile" className={linkClass}>
+                      My Profile
+                    </NavLink>
+                  </li>
+                  <li>
+                    <button
+                      onClick={handleSignOut}
+                      className="text-red-600 font-medium hover:underline"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
-          <a className="btn btn-ghost normal-case text-2xl font-extrabold text-green-700 tracking-wide">
+
+          {/* Logo */}
+          <Link
+            to="/"
+            className="btn btn-ghost normal-case text-2xl font-extrabold text-green-700 tracking-wide"
+          >
             Cropzen<span className="text-green-500">.</span>
-          </a>
+          </Link>
         </div>
 
-        {/* Center */}
+        {/* Desktop Nav */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 gap-4 text-gray-700">
-            {links}
+            <li>
+              <NavLink to="/" className={linkClass}>
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/allCrops" className={linkClass}>
+                All Crops
+              </NavLink>
+            </li>
+
+            {user && (
+              <>
+                <li>
+                  <NavLink to="/addCrops" className={linkClass}>
+                    Add Crops
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/myPosts" className={linkClass}>
+                    My Posts
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/myInterests" className={linkClass}>
+                    My Interests
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/myProfile" className={linkClass}>
+                    My Profile
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
 
         {/* Right side */}
         <div className="navbar-end flex items-center gap-4">
-          {/* 👤 Always show an avatar */}
+          {/* Avatar */}
           <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-green-600 flex items-center justify-center bg-white">
             {user?.photoURL ? (
               <img
-              referrerPolicy="no-referrer"
+                referrerPolicy="no-referrer"
                 src={user.photoURL}
                 alt="User Avatar"
                 className="w-full h-full object-cover"
@@ -109,7 +158,7 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* 🔘 Auth Button */}
+          {/* Auth Buttons */}
           {user ? (
             <button
               onClick={handleSignOut}
@@ -118,7 +167,7 @@ const Navbar = () => {
               Sign Out
             </button>
           ) : (
-            <Link to={"/auth/login"}>
+            <Link to="/auth/login">
               <button className="btn bg-green-600 text-white border-none hover:bg-green-700 transition duration-300">
                 Login
               </button>

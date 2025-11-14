@@ -8,19 +8,18 @@ import ExtraComp from "../Components/ExtraComp";
 import ExtraComp2 from "../Components/ExtraComp2";
 
 const Home = () => {
-  const latestCropsPromise = fetch("http://localhost:3000/latest-crops").then(
-    (res) => res.json()
-  );
+  const latestCropsPromise = fetch(
+    "https://cropzen.vercel.app/latest-crops"
+  ).then((res) => res.json());
   return (
     <div>
       <Banner />
       <LatestCrops latestCropsPromise={latestCropsPromise}></LatestCrops>
       <Blogs />
       <Procedure />
-      <ExtraComp2/>
-      <Specialists/>
-      <ExtraComp/>
-      
+      <ExtraComp2 />
+      <Specialists />
+      <ExtraComp />
     </div>
   );
 };

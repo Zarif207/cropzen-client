@@ -9,14 +9,14 @@ const MyInterests = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/interest?email=${user.email}`)
+      fetch(`https://cropzen.vercel.app/interest?email=${user.email}`)
         .then((res) => res.json())
         .then(async (data) => {
           const enrichedData = await Promise.all(
             data.map(async (interest) => {
               try {
                 const res = await fetch(
-                  `http://localhost:3000/crops/${interest.cropId}`
+                  `https://cropzen.vercel.app/crops/${interest.cropId}`
                 );
                 const crop = await res.json();
                 return { ...interest, crop };
@@ -51,7 +51,7 @@ const MyInterests = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/interest/${_id}`, {
+        fetch(`https://cropzen.vercel.app/interest/${_id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -73,9 +73,7 @@ const MyInterests = () => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
       <div className="text-center mb-10">
-        <h2 className="text-4xl font-bold text-green-700 mb-2">
-          My Interests
-        </h2>
+        <h2 className="text-4xl font-bold text-green-700 mb-2">My Interests</h2>
         <p className="text-gray-500">
           You have shown interest in{" "}
           <span className="text-green-600 font-semibold">

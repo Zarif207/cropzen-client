@@ -23,7 +23,7 @@ const CropDetails = () => {
 
   // ✅ Load crop details
   useEffect(() => {
-    fetch(`http://localhost:3000/crops/${cropId}`)
+    fetch(`https://cropzen.vercel.app/crops/${cropId}`)
       .then((res) => res.json())
       .then((data) => {
         setCrop(data);
@@ -33,7 +33,7 @@ const CropDetails = () => {
 
   // ✅ Load interests (from /interest) and filter by cropId
   useEffect(() => {
-    fetch("http://localhost:3000/interest")
+    fetch("https://cropzen.vercel.app/interest")
       .then((res) => res.json())
       .then((data) => {
         const cropInterests = data.filter((i) => i.cropId === cropId);
@@ -86,7 +86,7 @@ const CropDetails = () => {
 
     if (!confirm.isConfirmed) return;
 
-    fetch("http://localhost:3000/interest", {
+    fetch("https://cropzen.vercel.app/interest", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(interestData),
@@ -104,7 +104,7 @@ const CropDetails = () => {
   const handleStatusChange = (interestId, status) => {
     if (!isOwner) return;
 
-    fetch(`http://localhost:3000/interest/${interestId}`, {
+    fetch(`https://cropzen.vercel.app/interest/${interestId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -119,9 +119,7 @@ const CropDetails = () => {
 
           // ✅ Update UI instantly
           setInterests((prev) =>
-            prev.map((i) =>
-              i._id === interestId ? { ...i, status } : i
-            )
+            prev.map((i) => (i._id === interestId ? { ...i, status } : i))
           );
 
           // ✅ Reduce crop quantity in UI instantly if accepted
@@ -357,17 +355,13 @@ const CropDetails = () => {
                     {isOwner && i.status === "pending" && (
                       <td className="flex gap-2 justify-center py-2">
                         <button
-                          onClick={() =>
-                            handleStatusChange(i._id, "accepted")
-                          }
+                          onClick={() => handleStatusChange(i._id, "accepted")}
                           className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                         >
                           Accept
                         </button>
                         <button
-                          onClick={() =>
-                            handleStatusChange(i._id, "rejected")
-                          }
+                          onClick={() => handleStatusChange(i._id, "rejected")}
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                         >
                           Reject

@@ -10,7 +10,7 @@ const MyPost = () => {
   // ✅ Fetch only user's crops
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/crops?email=${user.email}`)
+      fetch(`https://cropzen.vercel.app/crops?email=${user.email}`)
         .then((res) => res.json())
         .then((data) => setMyCrops(data))
         .catch((err) => console.error("Error fetching crops:", err));
@@ -29,7 +29,7 @@ const MyPost = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/crops/${id}`, { method: "DELETE" })
+        fetch(`https://cropzen.vercel.app/crops/${id}`, { method: "DELETE" })
           .then((res) => res.json())
           .then((data) => {
             if (data.deletedCount > 0) {
@@ -48,7 +48,7 @@ const MyPost = () => {
     const updatedName = form.name.value;
     const updatedPrice = parseFloat(form.price.value);
 
-    fetch(`http://localhost:3000/crops/${selectedCrop._id}`, {
+    fetch(`https://cropzen.vercel.app/crops/${selectedCrop._id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ name: updatedName, price: updatedPrice }),

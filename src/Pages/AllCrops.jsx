@@ -11,7 +11,7 @@ const AllCrops = () => {
 
   // ✅ Fetch crops
   useEffect(() => {
-    fetch("http://localhost:3000/crops")
+    fetch("https://cropzen.vercel.app/crops")
       .then((res) => res.json())
       .then((data) => {
         setCrops(data);
@@ -21,7 +21,6 @@ const AllCrops = () => {
       .catch((err) => console.error("Error fetching crops:", err));
   }, []);
 
-  
   useEffect(() => {
     const lowerSearch = search.toLowerCase();
     const filtered = crops.filter((crop) =>

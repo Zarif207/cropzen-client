@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
       {
         path: "/allCrops",
         element: <AllCrops />,
-        loader: () => fetch("http://localhost:3000/crops"),
+        loader: () => fetch("https://cropzen.vercel.app/crops"),
       },
       {
         path: "/addCrops",
@@ -75,7 +75,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/crops/${params.id}`),
+          fetch(`https://cropzen.vercel.app/crops/${params.id}`),
       },
     ],
   },
