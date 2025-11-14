@@ -69,7 +69,7 @@ const AddCrops = () => {
       });
   };
 
-  // Page entry loading UI
+ 
    if (pageLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh]">
