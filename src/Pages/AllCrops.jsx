@@ -42,14 +42,14 @@ const AllCrops = () => {
   }
 
   return (
-    <motion.div
+    <div
       className="max-w-7xl mx-auto px-6 py-10"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.6 }}
     >
-      <motion.div
+      <div
         className="flex justify-center mb-10"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -68,7 +68,7 @@ const AllCrops = () => {
           />
           <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-600 text-xl" />
         </div>
-      </motion.div>
+      </div>
 
       {filteredCrops.length === 0 ? (
         <div className="text-center text-gray-600 text-lg  my-30">
@@ -76,7 +76,7 @@ const AllCrops = () => {
           <span className="font-semibold text-green-600">"{search}"</span>
         </div>
       ) : (
-        <motion.div
+        <div
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -84,7 +84,7 @@ const AllCrops = () => {
           transition={{ duration: 0.8 }}
         >
           {filteredCrops.map((crop) => (
-            <motion.div
+            <div
               key={crop._id}
               initial={{ opacity: 0, y: 40, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -147,11 +147,11 @@ const AllCrops = () => {
                   </Link>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 

@@ -43,12 +43,12 @@ const WebBlogs = () => {
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
 
         {/* LEFT SECTION */}
-        <div>
+        <div className="order-2 md:order-1">
           <p className="text-green-700 uppercase tracking-wider mb-2 font-semibold">
             HOW IT WORKS
           </p>
 
-          <h2 className="text-4xl md:text-5xl font-bold mt-3 leading-tight text-[#2c4a3e]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-3 leading-tight text-[#2c4a3e]">
             Simple Process for
             <br /> Farmers & Buyers
           </h2>
@@ -64,7 +64,7 @@ const WebBlogs = () => {
               <div key={i} className="flex gap-4">
                 {item.icon}
                 <div>
-                  <h3 className="font-semibold text-2xl">{item.title}</h3>
+                  <h3 className="font-semibold text-xl sm:text-2xl">{item.title}</h3>
                   <p className="text-sm">{item.desc}</p>
                 </div>
               </div>
@@ -77,11 +77,11 @@ const WebBlogs = () => {
         </div>
 
         {/* RIGHT IMAGE */}
-        <div className="md:-mr-20 lg:-mr-30 xl:-mr-29">
+        <div className="order-1 md:order-2 flex justify-center">
           <img
             src={farmerImg}
             alt="Farmer"
-            className="w-full h-full object-cover rounded-[150px_0_0_150px]"
+            className="w-full max-w-[450px] md:max-w-full h-full object-cover rounded-[100px]"
           />
         </div>
       </div>
