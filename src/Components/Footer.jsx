@@ -1,25 +1,29 @@
 import React from "react";
-import { FaFacebookF, FaTwitter, FaPinterestP, FaInstagram, FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaWhatsapp,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaFacebookMessenger,
+} from "react-icons/fa";
+import vegStore1 from "../assets/veg-store-1.jpg";
+import vegStore2 from "../assets/veg-store-2.jpg";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
     <footer className="bg-[#244d36] text-gray-200 pt-16 pb-8 relative overflow-hidden">
-      {/* Top Section */}
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10 border-b border-green-700 pb-10">
-        
-        {/* Logo + About */}
         <div>
           <div className="flex items-center space-x-2 mb-4">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/619/619034.png"
-              alt="logo"
-              className="w-10 h-10"
-            />
-            <h2 className="text-2xl font-bold text-white">Cropzen</h2>
+            <h2 className="text-2xl font-bold italic text-white">Cropzen</h2>
           </div>
           <p className="text-gray-300 mb-6 leading-relaxed">
-            There are many variations of passages of lorem ipsum available,
-            but the majority suffered.
+            Your trusted platform for reliable crop trading and farming support.
+            Together, we’re building a future of sustainability and smarter
+            agriculture.
           </p>
           <div className="flex items-center mb-6 bg-white rounded-md overflow-hidden w-64">
             <input
@@ -33,8 +37,8 @@ const Footer = () => {
           </div>
           <div className="flex space-x-4 text-gray-200 text-xl">
             <FaFacebookF className="hover:text-white cursor-pointer" />
-            <FaTwitter className="hover:text-white cursor-pointer" />
-            <FaPinterestP className="hover:text-white cursor-pointer" />
+            <FaXTwitter className="hover:text-white cursor-pointer" />
+            <FaFacebookMessenger className="hover:text-white cursor-pointer" />
             <FaInstagram className="hover:text-white cursor-pointer" />
           </div>
         </div>
@@ -51,13 +55,12 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* News */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">News</h3>
           <div className="space-y-5">
             <div className="flex items-center space-x-3">
               <img
-                src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=60"
+                src={vegStore1}
                 alt="news"
                 className="w-14 h-14 rounded-md object-cover"
               />
@@ -72,7 +75,7 @@ const Footer = () => {
             </div>
             <div className="flex items-center space-x-3">
               <img
-                src="https://images.unsplash.com/photo-1600093463592-8e36ae74a6c7?auto=format&fit=crop&w=200&q=60"
+                src={vegStore2}
                 alt="news"
                 className="w-14 h-14 rounded-md object-cover"
               />
@@ -88,7 +91,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Contact */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
           <ul className="space-y-4 text-gray-300">
@@ -112,7 +114,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Section */}
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm pt-6">
         <p>© Copyright by Ninetheme.com</p>
         <div className="flex space-x-4 mt-2 md:mt-0">

@@ -1,52 +1,68 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const Specialists = () => {
   const specialists = [
     {
       name: "Daisy Wilkerson",
       title: "Environmentalist",
-      image: "https://orga.wpengine.com/wp-content/uploads/2018/03/team5.jpg", 
+      image: "https://orga.wpengine.com/wp-content/uploads/2018/03/team5.jpg",
       description:
-        "Ut enim admin ima quis nostrum exercitationem ullammas corporis suscipit laboriosam.",
+        "Daisy focuses on sustainable farming systems and ensures our agricultural practices protect local ecosystems.",
     },
     {
       name: "Roger Hansen",
       title: "Soil Fertility Specialist",
-      image: "https://orga.wpengine.com/wp-content/uploads/2018/03/team6.jpg", 
+      image: "https://orga.wpengine.com/wp-content/uploads/2018/03/team6.jpg",
       description:
-        "Ut enim admin ima quis nostrum exercitationem ullammas corporis suscipit laboriosam.",
+        "Roger analyzes soil health and nutrient balance, helping farmers maximize crop growth while preserving soil quality.",
     },
     {
       name: "Lynn Harrison",
       title: "Livestock Farmer",
-      image: "https://orga.wpengine.com/wp-content/uploads/2018/03/team7.jpg", 
+      image: "https://orga.wpengine.com/wp-content/uploads/2018/03/team7.jpg",
       description:
-        "Ut enim admin ima quis nostrum exercitationem ullammas corporis suscipit laboriosam.",
+        "Lynn manages ethical livestock farming, ensuring animal welfare and high-quality production standards.",
     },
     {
       name: "Andrea Hopkins",
       title: "Botanist",
-      image: "https://orga.wpengine.com/wp-content/uploads/2018/03/team8.jpg", 
+      image: "https://orga.wpengine.com/wp-content/uploads/2018/03/team8.jpg",
       description:
-        "Ut enim admin ima quis nostrum exercitationem ullammas corporis suscipit laboriosam.",
+        "Andrea studies plant species and development, guiding improved cultivation methods and crop resilience.",
     },
   ];
 
   return (
     <div className="py-20 bg-[#d8d8d8aa] text-center">
-      {/* Header */}
-      <p className="text-gray-500 mb-2 text-sm tracking-wide">
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="text-gray-500 mb-2 text-sm tracking-wide"
+      >
         They work Relentlessly
-      </p>
-      <h2 className="text-4xl font-bold mb-12 text-[#2c4a3e]">
-        Our Farming <span className="text-green-600">Specialists</span> 
-      </h2>
+      </motion.p>
 
-      {/* Cards Grid */}
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="text-4xl font-bold mb-12 text-[#2c4a3e]"
+      >
+        Our Farming <span className="text-green-600">Specialists</span>
+      </motion.h2>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto px-4">
         {specialists.map((person, index) => (
-          <div
+          <motion.div
             key={index}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.15 }}
             className="bg-gray-100 p-8 rounded-lg shadow-sm hover:shadow-lg transition duration-300"
           >
             <div className="flex justify-center mb-6">
@@ -64,7 +80,7 @@ const Specialists = () => {
             <p className="text-gray-500 text-sm leading-relaxed">
               {person.description}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

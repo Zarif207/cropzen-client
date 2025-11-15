@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Crops from "./Crops";
 import { Link } from "react-router";
+import { motion } from "framer-motion";
 
 const LatestCrops = ({ latestCropsPromise }) => {
   const [crops, setCrops] = useState([]);
@@ -10,26 +11,60 @@ const LatestCrops = ({ latestCropsPromise }) => {
   }, [latestCropsPromise]);
 
   return (
-    <div className="mb-12">
-      <h2 className="text-4xl lg:text-5xl font-bold text-[#2C4A3E] text-center p-5 mt-50 mb-6 leading-tight">
+    <div className="mb-12 px-4 md:px-10 lg:px-20">
+      <motion.h2
+        className="text-4xl md:text-5xl font-bold text-[#2C4A3E] mb-6 text-center mt-20"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
         Our Latest Crops
-      </h2>
+      </motion.h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-30">
-        {crops.map((crops) => (
-          <Crops key={crops._id} crops={crops} />
+      {/* ⭐ ADDED THIS PARAGRAPH ⭐ */}
+      <p className="text-green-700 uppercase tracking-wider mb-2 font-semibold text-center">
+        Explore the freshest harvests added by our trusted farmers.  
+
+      </p>
+      {/* ⭐ END ADDED PART ⭐ */}
+
+      {/* CROPS GRID */}
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        {crops.map((crop) => (
+          <motion.div
+            key={crop._id}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+          >
+            <Crops crops={crop} />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Center Button */}
-      <div className="flex justify-center mt-10">
+      <motion.div
+        className="flex justify-center mt-10"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
         <Link
           to="/allCrops"
           className="bg-green-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-green-700 transition"
         >
-           All Crops
+          All Crops
         </Link>
-      </div>
+      </motion.div>
     </div>
   );
 };

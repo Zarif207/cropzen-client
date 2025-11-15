@@ -21,6 +21,11 @@ const CropDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const [sortOrder, setSortOrder] = useState("highToLow");
 
+  // NEW: track if user already sent interest
+  const hasSentInterest = interests.some(
+    (i) => i?.userEmail === user?.email
+  );
+
   // Load crop
   useEffect(() => {
     fetch(`https://cropzen.vercel.app/crops/${cropId}`)
@@ -51,14 +56,35 @@ const CropDetails = () => {
     return sortOrder === "highToLow" ? totalB - totalA : totalA - totalB;
   });
 
-  // Handle submit interest
+  // -------------------------------------------------------------------
+  //  HANDLE INTEREST SUBMIT (UNCHANGED) + validated
+  // -------------------------------------------------------------------
   const handleInterestSubmit = async (e) => {
     e.preventDefault();
+
+    if (hasSentInterest) {
+      Swal.fire(
+        "Already Sent",
+        "You’ve already sent an interest for this crop.",
+        "info"
+      );
+      return;
+    }
 
     if (quantity < 1) {
       Swal.fire("Invalid Quantity", "Quantity must be at least 1.", "warning");
       return;
     }
+
+    if (quantity > crop?.quantity) {
+      Swal.fire(
+        "Quantity Not Available",
+        `Only ${crop?.quantity} ${crop?.unit} available.`,
+        "error"
+      );
+      return;
+    }
+
     if (!price || price <= 0) {
       Swal.fire("Invalid Price", "Please enter a valid bid price.", "warning");
       return;
@@ -99,7 +125,7 @@ const CropDetails = () => {
       .catch((err) => console.error(err));
   };
 
-  // Accept / Reject
+  // Accept or Reject
   const handleStatusChange = (interestId, status) => {
     if (!isOwner) return;
 
@@ -118,13 +144,11 @@ const CropDetails = () => {
           );
 
           if (status === "accepted") {
-            const acceptedInterest = interests?.find(
-              (i) => i?._id === interestId
-            );
-            if (acceptedInterest) {
+            const accepted = interests?.find((i) => i?._id === interestId);
+            if (accepted) {
               setCrop((prev) => ({
                 ...prev,
-                quantity: (prev?.quantity || 0) - (acceptedInterest?.quantity || 0),
+                quantity: (prev?.quantity || 0) - (accepted?.quantity || 0),
               }));
             }
           }
@@ -140,8 +164,11 @@ const CropDetails = () => {
 
   if (loading || !crop)
     return (
-      <div className="flex justify-center items-center h-[70vh] text-green-700 font-semibold text-xl">
-        Loading crop details...
+      <div className="flex flex-col justify-center items-center h-[70vh]">
+        <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-green-700 font-semibold text-lg animate-pulse">
+          Loading crop details...
+        </p>
       </div>
     );
 
@@ -178,9 +205,7 @@ const CropDetails = () => {
             <p className="text-xl font-semibold text-green-600">
               ৳ {crop?.pricePerUnit} / {crop?.unit}
             </p>
-            <p className="text-gray-500">
-              Available: {crop?.quantity ?? "N/A"}
-            </p>
+            <p className="text-gray-500">Available: {crop?.quantity}</p>
           </div>
 
           <p className="text-gray-700 font-medium flex items-center gap-2">
@@ -196,17 +221,25 @@ const CropDetails = () => {
           </p>
 
           {!isOwner && (
-            <button
-              onClick={() => setShowModal(true)}
-              className="mt-4 flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-all"
-            >
-              <FiSend /> Send Interest
-            </button>
+            <>
+              {hasSentInterest ? (
+                <p className="mt-4 text-red-600 font-semibold">
+                  You’ve already sent an interest for this crop.
+                </p>
+              ) : (
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="mt-4 flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-all"
+                >
+                  <FiSend /> Send Interest
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>
 
-      {/* Interest Modal */}
+      {/* INTEREST MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 relative">
@@ -221,66 +254,72 @@ const CropDetails = () => {
               Send Your Interest
             </h3>
 
-            <form onSubmit={handleInterestSubmit} className="space-y-5">
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">
-                  Quantity ({crop?.unit})
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-                  required
-                />
-              </div>
+            {hasSentInterest ? (
+              <p className="text-red-600 font-semibold text-center py-6">
+                You’ve already sent an interest for this crop.
+              </p>
+            ) : (
+              <form onSubmit={handleInterestSubmit} className="space-y-5">
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">
+                    Quantity ({crop?.unit})
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={quantity}
+                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                    required
+                  />
+                </div>
 
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">
-                  Your Bid Price (৳ per {crop?.unit})
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  value={price}
-                  onChange={(e) => setPrice(Number(e.target.value))}
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-                  required
-                />
-              </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">
+                    Your Bid Price (৳ per {crop?.unit})
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={price}
+                    onChange={(e) => setPrice(Number(e.target.value))}
+                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                    required
+                  />
+                </div>
 
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">
-                  Message
-                </label>
-                <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Write a short message..."
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 h-24 focus:ring-2 focus:ring-green-500 outline-none"
-                />
-              </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">
+                    Message
+                  </label>
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Write a short message..."
+                    className="w-full border border-gray-300 rounded-md px-4 py-2 h-24 focus:ring-2 focus:ring-green-500 outline-none"
+                  />
+                </div>
 
-              <div className="flex justify-between items-center text-lg font-medium text-gray-700">
-                <span>Total Offer:</span>
-                <span className="text-green-600 font-bold">
-                  ৳ {totalPrice || 0}
-                </span>
-              </div>
+                <div className="flex justify-between items-center text-lg font-medium text-gray-700">
+                  <span>Total Offer:</span>
+                  <span className="text-green-600 font-bold">
+                    ৳ {totalPrice || 0}
+                  </span>
+                </div>
 
-              <button
-                type="submit"
-                className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                <FiSend /> Submit Interest
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <FiSend /> Submit Interest
+                </button>
+              </form>
+            )}
           </div>
         </div>
       )}
 
-      {/* Received Interests */}
+      {/* INTEREST TABLE */}
       <div className="bg-white p-8 rounded-2xl shadow-md border border-green-100">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-2xl font-semibold text-green-700">
@@ -332,7 +371,9 @@ const CropDetails = () => {
                     <td className="px-4 py-2">{i?.quantity}</td>
                     <td className="px-4 py-2">{i?.price}</td>
                     <td className="px-4 py-2 font-medium text-green-600">
-                      ৳ {(i?.quantity || 0) * (i?.price || crop?.pricePerUnit || 0)}
+                      ৳
+                      {(i?.quantity || 0) *
+                        (i?.price || crop?.pricePerUnit || 0)}
                     </td>
                     <td className="px-4 py-2">{i?.message}</td>
                     <td className="px-4 py-2">
@@ -352,13 +393,17 @@ const CropDetails = () => {
                     {isOwner && i?.status === "pending" && (
                       <td className="flex gap-2 justify-center py-2">
                         <button
-                          onClick={() => handleStatusChange(i?._id, "accepted")}
+                          onClick={() =>
+                            handleStatusChange(i?._id, "accepted")
+                          }
                           className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                         >
                           Accept
                         </button>
                         <button
-                          onClick={() => handleStatusChange(i?._id, "rejected")}
+                          onClick={() =>
+                            handleStatusChange(i?._id, "rejected")
+                          }
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                         >
                           Reject

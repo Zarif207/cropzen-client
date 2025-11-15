@@ -42,17 +42,14 @@ const BlogsSection = () => {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <p className="text-gray-500 tracking-widest uppercase mb-2">
-            Welcome to Agricon
+          <p className="text-green-700 uppercase tracking-wider mb-2 font-semibold">
+            Welcome to Cropzen
           </p>
           <h2 className="text-4xl lg:text-5xl font-bold text-[#2C4A3E] mb-6 leading-tight">
             Better Agriculture <br /> for Better Future
           </h2>
           <p className="text-[#D69E2E] text-lg mb-6 font-medium">
-            We have 30 years of agriculture & eco farming experience globally, work with{" "}
-            <span className="underline cursor-pointer hover:text-[#B7791F]">
-              professionals
-            </span>
+            We have 30 years of agriculture & eco farming experience globally, work with professionals{" "}
           </p>
           <p className="text-gray-600 mb-10 leading-relaxed">
             There are many variations of passages of lorem ipsum available but the majority have suffered alteration

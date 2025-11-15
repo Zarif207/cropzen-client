@@ -95,9 +95,9 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             to="/"
-            className="btn btn-ghost normal-case text-2xl font-extrabold text-green-700 tracking-wide"
+            className=" normal-case text-2xl font-extrabold italic text-green-700 tracking-wide"
           >
-            Cropzen<span className="text-green-500">.</span>
+            Cropzen
           </Link>
         </div>
 

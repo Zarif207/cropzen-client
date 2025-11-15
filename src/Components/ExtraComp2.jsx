@@ -1,15 +1,22 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
+import { motion } from "framer-motion";
 
 const ExtraComp2 = () => {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-20 flex flex-col lg:flex-row items-center gap-16">
+    <section className="max-w-7xl mx-auto px-6 py-20 flex flex-col lg:flex-row items-center gap-16 mb-5">
       {/* LEFT SIDE — TEXT */}
-      <div className="flex-1 space-y-6">
+      <motion.div
+        className="flex-1 space-y-6 text-center lg:text-left"
+        initial={{ opacity: 0, x: -40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7 }}
+      >
         <p className="text-green-700 italic font-medium text-lg">
           Get to Know Us
         </p>
 
-        <h2 className="text-5xl font-extrabold text-[#1a2e05] leading-tight">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-[#2c4a3e] leading-tight">
           We’re leading Organic & <br /> Agriculture Market
         </h2>
 
@@ -20,7 +27,7 @@ const ExtraComp2 = () => {
         </p>
 
         {/* ICON TEXTS */}
-        <div className="flex flex-wrap gap-10 mt-8">
+        <div className="flex flex-col md:flex-row flex-wrap gap-10 mt-8 justify-center lg:justify-start">
           <div className="flex items-center gap-3">
             <div className="bg-yellow-100 p-3 rounded-full">
               <svg
@@ -73,30 +80,36 @@ const ExtraComp2 = () => {
         </div>
 
         {/* BUTTON */}
-        <button className="mt-10 flex items-center gap-3 bg-green-800 text-white text-lg font-medium px-8 py-4 rounded-full hover:bg-green-900 transition-all">
+        <button className="mt-10 flex items-center gap-3 bg-green-700 text-white text-lg font-medium px-8 py-4 rounded-full hover:bg-green-600 transition-all mx-auto lg:mx-0">
           Discover More
+          
           <span className="bg-yellow-400 text-green-900 rounded-full p-2">
             ➜
           </span>
         </button>
-      </div>
+      </motion.div>
 
-      {/* RIGHT SIDE — SINGLE IMAGE */}
-      <div className="flex-1 relative">
-        {/* Green background box behind image */}
-        <div className="absolute -top-10 -right-10 w-[420px] h-[480px] bg-green-900 rounded-lg -z-10"></div>
+      {/* RIGHT SIDE — IMAGE */}
+      <motion.div
+        className="flex-1 relative flex justify-center lg:justify-end"
+        initial={{ opacity: 0, x: 40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7 }}
+      >
+        {/* Green background box */}
+        <div className="absolute -top-6 md:-top-10 -right-4 md:-right-10 w-[260px] md:w-[420px] h-[340px] md:h-[480px] bg-green-900 rounded-lg -z-10"></div>
 
         <img
           src="https://argonic-agriculture-and-organic-farm-html-template.vercel.app/assets/images/about/about-thumb.png"
           alt="Organic Farming"
-          className="w-full max-w-[450px] h-auto rounded-lg object-cover"
+          className="w-[260px] md:w-[450px] h-auto rounded-lg object-cover"
         />
 
         {/* Experience badge */}
-        <div className="absolute bottom-4 left-4 bg-green-800 text-white text-lg font-semibold px-8 py-3 rounded-full shadow-lg">
+        <div className="absolute bottom-3 left-3 bg-green-800 text-white text-base md:text-lg font-semibold px-6 md:px-8 py-2 md:py-3 rounded-full shadow-lg">
           30+ <span className="font-normal">Years Experience</span>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

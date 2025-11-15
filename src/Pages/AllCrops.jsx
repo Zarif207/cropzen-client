@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FiSearch, FiMapPin } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const AllCrops = () => {
   const [crops, setCrops] = useState([]);
@@ -42,9 +43,21 @@ const AllCrops = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
+    <motion.div
+      className="max-w-7xl mx-auto px-6 py-10"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{ duration: 0.6 }}
+    >
       {/* 🔍 Search Bar */}
-      <div className="flex justify-center mb-10">
+      <motion.div
+        className="flex justify-center mb-10"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="relative w-full md:w-1/2">
           <input
             type="text"
@@ -57,19 +70,29 @@ const AllCrops = () => {
           />
           <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-600 text-xl" />
         </div>
-      </div>
+      </motion.div>
 
       {/* 🌱 Crop Cards */}
       {filteredCrops.length === 0 ? (
-        <div className="text-center text-gray-600 text-lg mt-16">
+        <div className="text-center text-gray-600 text-lg  my-30">
           No crops found for{" "}
           <span className="font-semibold text-green-600">"{search}"</span>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 0.8 }}
+        >
           {filteredCrops.map((crop) => (
-            <div
+            <motion.div
               key={crop._id}
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.5 }}
               className="group relative bg-white rounded-2xl overflow-hidden 
                          shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100"
             >
@@ -132,11 +155,11 @@ const AllCrops = () => {
                   </Link>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

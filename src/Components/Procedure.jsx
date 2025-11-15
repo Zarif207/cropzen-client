@@ -10,7 +10,7 @@ const steps = [
       "https://agrikon.ninetheme.com/wp-content/uploads/2020/12/service-6.jpg",
     icon: <FaTractor className="text-white text-3xl" />,
     title: "Agriculture Products",
-    desc: "Lorem ipsum dolor sit ametad pisicing elit sed simply do ut.",
+    desc: "We provide high-quality crops directly from trusted farmers across the country.",
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const steps = [
       "https://agrikon.ninetheme.com/wp-content/uploads/2020/12/service-7.jpg",
     icon: <FaLeaf className="text-white text-3xl" />,
     title: "Organic Products",
-    desc: "Lorem ipsum dolor sit ametad pisicing elit sed simply do ut.",
+    desc: "All organic products are grown naturally without harmful chemicals or preservatives.",
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ const steps = [
       "https://agrikon.ninetheme.com/wp-content/uploads/2020/12/service-5.jpg",
     icon: <FaCarrot className="text-white text-3xl" />,
     title: "Fresh Vegetables",
-    desc: "Lorem ipsum dolor sit ametad pisicing elit sed simply do ut.",
+    desc: "Freshly harvested vegetables delivered straight from farms to ensure peak nutrition.",
   },
   {
     id: 4,
@@ -34,7 +34,7 @@ const steps = [
       "https://agrikon.ninetheme.com/wp-content/uploads/2020/12/service-4.jpg",
     icon: <FaTint className="text-white text-3xl" />,
     title: "Dairy Products",
-    desc: "Lorem ipsum dolor sit ametad pisicing elit sed simply do ut.",
+    desc: "Pure and healthy dairy products sourced from reliable local farmers.",
   },
 ];
 
@@ -48,7 +48,7 @@ const Procedure = () => {
           transition={{ duration: 0.4 }}
           className="text-green-700 uppercase tracking-wider mb-2 font-semibold"
         >
-          Welcome to Agricon Procedure
+          Welcome to Cropzen Procedure
         </motion.p>
 
         <motion.h2
