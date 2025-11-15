@@ -1,11 +1,16 @@
-# 🌾 Cropzen — Smart Crop Trading Platform
+# Cropzen — Smart Crop Marketplace
 
-**Cropzen** is a modern web platform designed to connect farmers and buyers in a transparent, easy, and efficient way.  
-It helps farmers showcase their fresh produce, while buyers can explore available crops, negotiate quantities, and express purchase interests seamlessly.
-
-
+**Cropzen** is a modern web platform that connects farmers and buyers in one seamless crop trading ecosystem.
+Farmers can list their crops, buyers can send interest requests, and both parties can manage everything from a simple and intuitive dashboard.
 
 ---
+
+## 🔗 Live Website  
+https://cropzen.netlify.app/
+
+---
+
+
 
 ## 🚀 Features
 
@@ -35,17 +40,4 @@ It helps farmers showcase their fresh produce, while buyers can explore availabl
 4. Once accepted, the crop’s available quantity automatically decreases.  
 5. Both parties can track interactions in “My Posts” and “My Interests” sections.
 
----
 
-## 🧩 Developer Notes
-
-- Built with a modular folder structure for scalability.  
-- Uses reusable React components for crops, tables, and modals.  
-- Backend API endpoints handle CRUD operations and real-time updates efficiently.  
-- 404 Not Found page is isolated from the main layout to prevent navbar/footer display.  
-- Clean, consistent UI design with professional Tailwind styling.  
-
-
----
-
-© 2025 **Cropzen** — Empowering Farmers, Connecting Markets.
