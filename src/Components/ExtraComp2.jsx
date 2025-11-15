@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 const ExtraComp2 = () => {
   return (
     <section className="max-w-7xl mx-auto px-6 py-20 flex flex-col lg:flex-row items-center gap-16 mb-5">
-      {/* LEFT SIDE — TEXT */}
       <motion.div
         className="flex-1 space-y-6 text-center lg:text-left"
         initial={{ opacity: 0, x: -40 }}
@@ -26,7 +25,6 @@ const ExtraComp2 = () => {
           used to sustain & enhance human life.
         </p>
 
-        {/* ICON TEXTS */}
         <div className="flex flex-col md:flex-row flex-wrap gap-10 mt-8 justify-center lg:justify-start">
           <div className="flex items-center gap-3">
             <div className="bg-yellow-100 p-3 rounded-full">
@@ -79,24 +77,20 @@ const ExtraComp2 = () => {
           </div>
         </div>
 
-        {/* BUTTON */}
         <button className="mt-10 flex items-center gap-3 bg-green-700 text-white text-lg font-medium px-8 py-4 rounded-full hover:bg-green-600 transition-all mx-auto lg:mx-0">
           Discover More
-          
           <span className="bg-yellow-400 text-green-900 rounded-full p-2">
             ➜
           </span>
         </button>
       </motion.div>
 
-      {/* RIGHT SIDE — IMAGE */}
       <motion.div
         className="flex-1 relative flex justify-center lg:justify-end"
         initial={{ opacity: 0, x: 40 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7 }}
       >
-        {/* Green background box */}
         <div className="absolute -top-6 md:-top-10 -right-4 md:-right-10 w-[260px] md:w-[420px] h-[340px] md:h-[480px] bg-green-900 rounded-lg -z-10"></div>
 
         <img
@@ -105,7 +99,6 @@ const ExtraComp2 = () => {
           className="w-[260px] md:w-[450px] h-auto rounded-lg object-cover"
         />
 
-        {/* Experience badge */}
         <div className="absolute bottom-3 left-3 bg-green-800 text-white text-base md:text-lg font-semibold px-6 md:px-8 py-2 md:py-3 rounded-full shadow-lg">
           30+ <span className="font-normal">Years Experience</span>
         </div>

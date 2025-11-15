@@ -21,12 +21,8 @@ const CropDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const [sortOrder, setSortOrder] = useState("highToLow");
 
-  // NEW: track if user already sent interest
-  const hasSentInterest = interests.some(
-    (i) => i?.userEmail === user?.email
-  );
+  const hasSentInterest = interests.some((i) => i?.userEmail === user?.email);
 
-  // Load crop
   useEffect(() => {
     fetch(`https://cropzen.vercel.app/crops/${cropId}`)
       .then((res) => res.json())
@@ -34,7 +30,6 @@ const CropDetails = () => {
       .catch((err) => console.error("Error fetching crop:", err));
   }, [cropId]);
 
-  // Load interests
   useEffect(() => {
     fetch("https://cropzen.vercel.app/interest")
       .then((res) => res.json())
@@ -56,9 +51,6 @@ const CropDetails = () => {
     return sortOrder === "highToLow" ? totalB - totalA : totalA - totalB;
   });
 
-  // -------------------------------------------------------------------
-  //  HANDLE INTEREST SUBMIT (UNCHANGED) + validated
-  // -------------------------------------------------------------------
   const handleInterestSubmit = async (e) => {
     e.preventDefault();
 
@@ -125,7 +117,6 @@ const CropDetails = () => {
       .catch((err) => console.error(err));
   };
 
-  // Accept or Reject
   const handleStatusChange = (interestId, status) => {
     if (!isOwner) return;
 
@@ -183,7 +174,6 @@ const CropDetails = () => {
         </button>
       </div>
 
-      {/* Crop Info */}
       <div className="grid md:grid-cols-2 gap-8 bg-white p-8 rounded-2xl shadow-md border border-green-100">
         <img
           src={crop?.image}
@@ -239,7 +229,6 @@ const CropDetails = () => {
         </div>
       </div>
 
-      {/* INTEREST MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 relative">
@@ -319,7 +308,6 @@ const CropDetails = () => {
         </div>
       )}
 
-      {/* INTEREST TABLE */}
       <div className="bg-white p-8 rounded-2xl shadow-md border border-green-100">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-2xl font-semibold text-green-700">
@@ -393,17 +381,13 @@ const CropDetails = () => {
                     {isOwner && i?.status === "pending" && (
                       <td className="flex gap-2 justify-center py-2">
                         <button
-                          onClick={() =>
-                            handleStatusChange(i?._id, "accepted")
-                          }
+                          onClick={() => handleStatusChange(i?._id, "accepted")}
                           className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                         >
                           Accept
                         </button>
                         <button
-                          onClick={() =>
-                            handleStatusChange(i?._id, "rejected")
-                          }
+                          onClick={() => handleStatusChange(i?._id, "rejected")}
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                         >
                           Reject

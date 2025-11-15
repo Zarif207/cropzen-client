@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -76,7 +77,7 @@ const Specialists = () => {
             <p className="text-gray-700 font-medium text-sm mb-3">
               {person.title}
             </p>
-            <div className="w-10 h-[2px] bg-green-500 mx-auto mb-4"></div>
+            <div className="w-10 h-0.5 bg-green-500 mx-auto mb-4"></div>
             <p className="text-gray-500 text-sm leading-relaxed">
               {person.description}
             </p>

@@ -22,7 +22,7 @@ const Footer = () => {
           </div>
           <p className="text-gray-300 mb-6 leading-relaxed">
             Your trusted platform for reliable crop trading and farming support.
-            Together, we’re building a future of sustainability and smarter
+            Together, we're building a future of sustainability and smarter
             agriculture.
           </p>
           <div className="flex items-center mb-6 bg-white rounded-md overflow-hidden w-64">
@@ -43,7 +43,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Links */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">Links</h3>
           <ul className="space-y-2 text-gray-300">
@@ -104,7 +103,7 @@ const Footer = () => {
             </li>
             <li className="flex items-center space-x-3">
               <FaEnvelope className="text-green-400 text-lg" />
-              <span>needhelp@company.com</span>
+              <span>needhelp@cropzen.com</span>
             </li>
             <li className="flex items-center space-x-3">
               <FaMapMarkerAlt className="text-green-400 text-lg" />

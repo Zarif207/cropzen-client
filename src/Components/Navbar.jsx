@@ -22,9 +22,7 @@ const Navbar = () => {
   return (
     <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
       <div className="navbar max-w-7xl mx-auto px-4 py-3">
-        {/* Left side */}
         <div className="navbar-start">
-          {/* Mobile Menu */}
           <div className="dropdown lg:hidden">
             <div tabIndex={0} role="button" className="btn btn-ghost">
               <svg
@@ -92,7 +90,6 @@ const Navbar = () => {
             </ul>
           </div>
 
-          {/* Logo */}
           <Link
             to="/"
             className=" normal-case text-2xl font-extrabold italic text-green-700 tracking-wide"
@@ -142,9 +139,7 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Right side */}
         <div className="navbar-end flex items-center gap-4">
-          {/* Avatar */}
           <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-green-600 flex items-center justify-center bg-white">
             {user?.photoURL ? (
               <img
@@ -158,7 +153,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Auth Buttons */}
           {user ? (
             <button
               onClick={handleSignOut}

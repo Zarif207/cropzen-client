@@ -60,7 +60,6 @@ const Procedure = () => {
           What We’re Offering
         </motion.h2>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {steps.map((step, i) => (
             <motion.div
@@ -71,19 +70,16 @@ const Procedure = () => {
               viewport={{ once: true }}
               className="bg-white rounded-xl shadow-md overflow-hidden relative group"
             >
-              {/* Image */}
               <img
                 src={step.image}
                 alt={step.title}
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
               />
 
-              {/* Floating Icon */}
               <div className="absolute top-40 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-600 w-16 h-16 flex items-center justify-center rounded-full shadow-lg border-4 border-white">
                 {step.icon}
               </div>
 
-              {/* Text */}
               <div className="pt-12 pb-10 px-6 text-center">
                 <h3 className="text-lg font-bold text-[#2C4A3E] mb-2">
                   {step.title}
@@ -97,7 +93,6 @@ const Procedure = () => {
         </div>
       </div>
 
-      {/* Subtle top & bottom fade */}
       <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-b from-white to-transparent"></div>
       <div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-t from-white to-transparent"></div>
     </section>

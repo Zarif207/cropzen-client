@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 const Login = () => {
   const { signInUser, signInWithGoogle } = useContext(AuthContext);
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // 👁️ show/hide toggle
+  const [showPassword, setShowPassword] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Login = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    setError(""); // clear previous error
+    setError("");
 
     signInUser(email, password)
       .then((result) => {
@@ -91,7 +91,7 @@ const Login = () => {
             />
           </div>
 
-          {/* PASSWORD INPUT WITH SHOW/HIDE */}
+          {/* PASSWORD */}
           <div className="relative">
             <label className="block text-gray-700 font-medium mb-1">
               Password
@@ -105,17 +105,14 @@ const Login = () => {
               required
             />
 
-            {/* Eye Icon */}
             <span
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-[52px] transform -translate-y-1/2 cursor-pointer text-gray-600"
             >
               {showPassword ? (
-                
                 <AiFillEye size={22} />
               ) : (
                 <AiFillEyeInvisible size={22} />
-                
               )}
             </span>
 
@@ -143,22 +140,19 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Divider */}
         <div className="flex items-center my-6">
-          <hr className="flex-grow border-gray-300" />
+          <hr className="grow border-gray-300" />
           <span className="mx-4 text-gray-500">OR</span>
-          <hr className="flex-grow border-gray-300" />
+          <hr className="grow border-gray-300" />
         </div>
 
-        {/* Google Sign-In */}
+        {/* Google */}
         <button
           onClick={handleGoogleSignIn}
           className="w-full border border-gray-300 hover:border-green-400 rounded-lg py-3 flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-md"
         >
           <FcGoogle className="text-2xl" />
-          <span className="text-gray-700 font-medium">
-            Login with Google
-          </span>
+          <span className="text-gray-700 font-medium">Login with Google</span>
         </button>
 
         <p className="text-center text-gray-600 mt-6">

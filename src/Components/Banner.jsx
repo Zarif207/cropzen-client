@@ -37,7 +37,6 @@ const Banner = () => {
   const prevSlide = () =>
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
 
-  // Auto-slide every 6 seconds
   useEffect(() => {
     const timer = setInterval(() => nextSlide(), 6000);
     return () => clearInterval(timer);
@@ -54,17 +53,14 @@ const Banner = () => {
           transition={{ duration: 1 }}
           className="absolute inset-0"
         >
-          {/* Background Image */}
           <img
             src={slides[current].image}
             alt={slides[current].title}
             className="w-full h-full object-cover"
           />
 
-          {/* Overlay */}
           <div className="absolute inset-0 bg-black/50"></div>
 
-          {/* Centered Text */}
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4">
             <p className="text-sm md:text-base tracking-widest mb-4 uppercase text-green-200">
               {slides[current].subtitle}
@@ -79,7 +75,6 @@ const Banner = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation arrows */}
       <button
         onClick={prevSlide}
         className="absolute left-6 top-1/2 -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-3 rounded-full transition-all duration-300"
@@ -93,7 +88,6 @@ const Banner = () => {
         <ChevronRight size={18} />
       </button>
 
-      {/* Slide Indicators */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
         {slides.map((_, i) => (
           <div

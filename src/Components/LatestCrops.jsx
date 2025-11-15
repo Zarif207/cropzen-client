@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Crops from "./Crops";
 import { Link } from "react-router";
@@ -22,14 +23,10 @@ const LatestCrops = ({ latestCropsPromise }) => {
         Our Latest Crops
       </motion.h2>
 
-      {/* ⭐ ADDED THIS PARAGRAPH ⭐ */}
       <p className="text-green-700 uppercase tracking-wider mb-2 font-semibold text-center">
-        Explore the freshest harvests added by our trusted farmers.  
-
+        Explore the freshest harvests added by our trusted farmers.
       </p>
-      {/* ⭐ END ADDED PART ⭐ */}
 
-      {/* CROPS GRID */}
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
         initial={{ opacity: 0 }}
@@ -50,7 +47,6 @@ const LatestCrops = ({ latestCropsPromise }) => {
         ))}
       </motion.div>
 
-      {/* Center Button */}
       <motion.div
         className="flex justify-center mt-10"
         initial={{ opacity: 0, y: 40 }}

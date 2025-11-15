@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FiSearch, FiMapPin } from "react-icons/fi";
@@ -10,7 +11,6 @@ const AllCrops = () => {
   const [filteredCrops, setFilteredCrops] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch crops
   useEffect(() => {
     fetch("https://cropzen.vercel.app/crops")
       .then((res) => res.json())
@@ -30,7 +30,6 @@ const AllCrops = () => {
     setFilteredCrops(filtered);
   }, [search, crops]);
 
-  // ✅ Custom Loading Spinner
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh]">
@@ -50,7 +49,6 @@ const AllCrops = () => {
       viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.6 }}
     >
-      {/* 🔍 Search Bar */}
       <motion.div
         className="flex justify-center mb-10"
         initial={{ opacity: 0, y: 30 }}
@@ -72,7 +70,6 @@ const AllCrops = () => {
         </div>
       </motion.div>
 
-      {/* 🌱 Crop Cards */}
       {filteredCrops.length === 0 ? (
         <div className="text-center text-gray-600 text-lg  my-30">
           No crops found for{" "}
@@ -96,14 +93,13 @@ const AllCrops = () => {
               className="group relative bg-white rounded-2xl overflow-hidden 
                          shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100"
             >
-              {/* 🖼️ Image Banner */}
               <div className="relative h-52 w-full overflow-hidden">
                 <img
                   src={crop.image}
                   alt={crop.name}
                   className="h-full w-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute bottom-3 left-4">
                   <h3 className="text-white text-2xl font-semibold drop-shadow-md flex items-center gap-2">
                     {crop.name}
@@ -114,7 +110,6 @@ const AllCrops = () => {
                 </span>
               </div>
 
-              {/* 💰 Quick Info Bar */}
               <div className="flex items-center justify-between bg-green-50 py-3 px-5 border-b border-green-100">
                 <p className="flex items-center gap-1 text-green-700 font-semibold">
                   ৳ {crop.pricePerUnit} / {crop.unit}
@@ -126,13 +121,11 @@ const AllCrops = () => {
                 )}
               </div>
 
-              {/* 📋 Crop Description */}
               <div className="p-5 space-y-3">
-                <p className="text-gray-600 text-sm line-clamp-2 min-h-[40px]">
+                <p className="text-gray-600 text-sm line-clamp-2 min-h-10">
                   {crop.description}
                 </p>
 
-                {/* 👤 Owner and 📍 Location */}
                 <div className="flex justify-between items-center text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <FaUser className="text-green-600" />
@@ -143,11 +136,10 @@ const AllCrops = () => {
                   </p>
                 </div>
 
-                {/* 🔗 Details Button */}
                 <div className="pt-3">
                   <Link
                     to={`/cropDetails/${crop._id}`}
-                    className="block w-full text-center bg-gradient-to-r from-green-600 to-green-500 
+                    className="block w-full text-center bg-linear-to-r from-green-600 to-green-500 
                                text-white py-2.5 rounded-xl font-medium shadow-sm 
                                hover:from-green-700 hover:to-green-600 transition-all duration-300"
                   >

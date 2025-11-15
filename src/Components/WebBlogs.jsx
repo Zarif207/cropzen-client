@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import farmerImg from "../assets/farmer-blog.jpg";
 import {
@@ -13,8 +14,6 @@ const WebBlogs = () => {
   return (
     <div className="w-full bg-[#F5F6EF] py-16 px-6 md:px-20">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-
-        {/* LEFT SIDE CONTENT */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -36,9 +35,8 @@ const WebBlogs = () => {
             one place — from listing crops to managing interests.
           </p>
 
-          {/* HOW IT WORKS POINTS */}
           <div className="mt-10 space-y-6 text-gray-700">
-            {[ 
+            {[
               {
                 icon: <FaSeedling size={32} className="text-green-700" />,
                 title: "Farmers create an account & list crops",
@@ -93,7 +91,6 @@ const WebBlogs = () => {
           </motion.button>
         </motion.div>
 
-        {/* RIGHT SIDE IMAGE */}
         <motion.div
           className="md:-mr-20 lg:-mr-30 xl:-mr-29"
           initial={{ opacity: 0, x: 80 }}

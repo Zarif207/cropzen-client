@@ -4,7 +4,6 @@ const ExtraComp = () => {
   return (
     <div className="bg-white mt-15">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between px-6 lg:px-12 gap-10">
-        {/* Left Image Section */}
         <div className="shrink-0">
           <img
             src="https://orga.wpengine.com/wp-content/uploads/2018/03/img04.jpg"
@@ -13,7 +12,6 @@ const ExtraComp = () => {
           />
         </div>
 
-        {/* Right Content Section */}
         <div className="text-center lg:text-left max-w-xl">
           <h2 className="text-5xl font-extrabold text-[#2c4a3e] leading-tight">
             Looking to do Organic Farming?

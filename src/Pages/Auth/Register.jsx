@@ -170,7 +170,6 @@ const Register = () => {
                 className="w-full outline-none"
               />
 
-              {/* Eye Toggle */}
               <span
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 cursor-pointer text-gray-600"
@@ -184,7 +183,6 @@ const Register = () => {
             )}
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition-colors"
@@ -193,7 +191,6 @@ const Register = () => {
           </button>
         </form>
 
-        {/* OR Divider */}
         <div className="flex items-center my-6">
           <hr className="grow border-gray-300" />
           <span className="mx-4 text-gray-500">OR</span>
@@ -208,7 +205,6 @@ const Register = () => {
           <FcGoogle size={22} /> Register with Google
         </button>
 
-        {/* Already have account */}
         <p className="text-center text-gray-600 mb-8 mt-5">
           Already have an account?{" "}
           <Link

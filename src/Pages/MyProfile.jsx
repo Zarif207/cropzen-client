@@ -50,9 +50,7 @@ const MyProfile = () => {
           My Profile
         </h2>
 
-        {/* Profile Section */}
         <div className="flex flex-col md:flex-row items-center gap-8">
-          {/* Profile Picture */}
           <div className="relative group">
             <img
               src={
@@ -70,7 +68,6 @@ const MyProfile = () => {
             )}
           </div>
 
-          {/* Info Section */}
           <div className="flex-1 w-full">
             {isEditing ? (
               <form

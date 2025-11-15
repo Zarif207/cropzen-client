@@ -69,8 +69,7 @@ const AddCrops = () => {
       });
   };
 
- 
-   if (pageLoading) {
+  if (pageLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh]">
         <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
@@ -92,7 +91,6 @@ const AddCrops = () => {
           onSubmit={handleAddCrop}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          {/* Crop Name */}
           <div className="form-control">
             <label className="label font-medium text-gray-700">Crop Name</label>
             <input
@@ -104,7 +102,6 @@ const AddCrops = () => {
             />
           </div>
 
-          {/* Type */}
           <div className="form-control">
             <label className="label font-medium text-gray-700">Type</label>
             <select
@@ -124,7 +121,6 @@ const AddCrops = () => {
             </select>
           </div>
 
-          {/* Price per unit */}
           <div className="form-control">
             <label className="label font-medium text-gray-700">
               Price per Unit (৳)
@@ -138,7 +134,6 @@ const AddCrops = () => {
             />
           </div>
 
-          {/* Unit */}
           <div className="form-control">
             <label className="label font-medium text-gray-700">Unit</label>
             <select
@@ -156,7 +151,6 @@ const AddCrops = () => {
             </select>
           </div>
 
-          {/* Quantity */}
           <div className="form-control">
             <label className="label font-medium text-gray-700">
               Estimated Quantity
@@ -170,7 +164,6 @@ const AddCrops = () => {
             />
           </div>
 
-          {/* Location */}
           <div className="form-control">
             <label className="label font-medium text-gray-700">Location</label>
             <input
@@ -182,7 +175,6 @@ const AddCrops = () => {
             />
           </div>
 
-          {/* Image */}
           <div className="form-control md:col-span-2">
             <label className="label font-medium text-gray-700">Image URL</label>
             <input
@@ -194,7 +186,6 @@ const AddCrops = () => {
             />
           </div>
 
-          {/* Description */}
           <div className="form-control md:col-span-2">
             <label className="label font-medium text-gray-700">
               Description
@@ -208,7 +199,6 @@ const AddCrops = () => {
             ></textarea>
           </div>
 
-          {/* Submit Button */}
           <div className="md:col-span-2">
             <button
               type="submit"
