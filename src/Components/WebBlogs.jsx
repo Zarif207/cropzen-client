@@ -13,28 +13,28 @@ const WebBlogs = () => {
   const steps = [
     {
       icon: <FaSeedling size={32} className="text-green-700" />,
-      title: "Farmers create an account & list crops",
-      desc: "Farmers can easily register and showcase their crops with full details like name, price, location, and quantity.",
+      title: "Step 1: Farmers list their crops",
+      desc: "Farmers create an account and add their crops with essential details like price, location, and available quantity.",
     },
     {
       icon: <FaShoppingCart size={32} className="text-green-700" />,
-      title: "Buyers browse crops & send interest",
-      desc: "Buyers explore crops and send interest requests with quantity and a short message.",
+      title: "Step 2: Buyers explore and send interest",
+      desc: "Buyers browse available crops and send interest requests by selecting quantity and adding a short message.",
     },
     {
       icon: <FaUserCheck size={32} className="text-green-700" />,
-      title: "Farmers review interests & respond",
-      desc: "Farmers receive and compare requests before accepting or rejecting.",
+      title: "Step 3: Farmers review buyer requests",
+      desc: "Farmers receive all interest requests in one place and can easily accept or reject them.",
     },
     {
       icon: <FaChartLine size={32} className="text-green-700" />,
-      title: "Quantity updates automatically",
-      desc: "Accepted interests instantly update crop availability.",
+      title: "Step 4: Crop availability updates",
+      desc: "When a request is accepted, the crop quantity updates automatically to keep listings accurate.",
     },
     {
       icon: <FaFolderOpen size={32} className="text-green-700" />,
-      title: "Track everything in dashboard",
-      desc: "Both farmers and buyers manage all activities easily.",
+      title: "Step 5: Manage everything in one dashboard",
+      desc: "Both farmers and buyers can track crops, interests, and activity from a single, easy-to-use dashboard.",
     },
   ];
 
@@ -49,30 +49,36 @@ const WebBlogs = () => {
           </p>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-3 leading-tight text-[#2c4a3e]">
-            Simple Process for
-            <br /> Farmers & Buyers
+            A Clear & Simple Journey
+            <br /> for Farmers and Buyers
           </h2>
 
-          <p className="text-gray-600 mt-4 text-[15px] leading-relaxed">
-            Our crop marketplace connects farmers and buyers through an
-            effortless, transparent and secure process. Everything happens in
-            one place — from listing crops to managing interests.
+          <p className="text-gray-600 mt-4 text-[15px] leading-relaxed max-w-xl">
+            Our platform is designed around a simple flow. Each step is clear,
+            transparent, and secure — making it easy to list crops, show
+            interest, and manage everything without confusion.
           </p>
 
           <div className="mt-10 space-y-6 text-gray-700">
             {steps.map((item, i) => (
-              <div key={i} className="flex gap-4">
+              <div key={i} className="flex gap-4 items-start">
                 {item.icon}
                 <div>
-                  <h3 className="font-semibold text-xl sm:text-2xl">{item.title}</h3>
-                  <p className="text-sm">{item.desc}</p>
+                  <h3 className="font-semibold text-lg sm:text-xl">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <button className="mt-10 px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition font-semibold">
-            Learn More →
+          {/* BUTTON */}
+          <button className="mt-10 flex items-center gap-3 bg-green-700 text-white text-lg md:text-xl font-medium px-8 md:px-10 py-4 md:py-5 rounded-full hover:bg-green-600 transition-all mx-auto lg:mx-0">
+            Discover More
+            <span className="bg-yellow-400 text-green-900 rounded-full p-2 md:p-3 text-lg md:text-xl">
+              ➜
+            </span>
           </button>
         </div>
 

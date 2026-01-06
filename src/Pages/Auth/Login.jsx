@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 import { FcGoogle } from "react-icons/fc";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaLeaf, FaStar } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 const Login = () => {
@@ -22,18 +22,15 @@ const Login = () => {
 
     signInUser(email, password)
       .then((result) => {
-        console.log(result.user);
         Swal.fire({
           title: "Login Successful!",
           text: `Welcome back, ${result.user.displayName || "Farmer"} 🌾`,
           icon: "success",
           confirmButtonColor: "#16a34a",
         });
-        e.target.reset();
         navigate(location.state || "/");
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         setError("Invalid email or password.");
         Swal.fire({
           title: "Login Failed!",
@@ -47,7 +44,6 @@ const Login = () => {
   const handleGoogleSignIn = () => {
     signInWithGoogle()
       .then((result) => {
-        console.log(result.user);
         Swal.fire({
           title: "Google Sign-In Successful!",
           text: `Welcome, ${result.user.displayName || "User"} 👋`,
@@ -57,7 +53,6 @@ const Login = () => {
         navigate(location.state || "/");
       })
       .catch((error) => {
-        console.error(error);
         Swal.fire({
           title: "Google Sign-In Failed!",
           text: error.message,
@@ -68,103 +63,145 @@ const Login = () => {
   };
 
   return (
-    <section className="flex items-center justify-center h-[700px]">
-      <div className="bg-white rounded-2xl shadow-2xl p-10 w-full max-w-md border border-green-100">
-        <h2 className="text-3xl font-extrabold text-green-700 text-center mb-2">
-          Login to Your Account
-        </h2>
-        <p className="text-center text-gray-500 mb-6">
-          Access your farming dashboard
-        </p>
+    <section className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 overflow-hidden py-12">
+      
+      {/* BACKGROUND BLOBS */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-green-200 to-emerald-300 rounded-full blur-3xl opacity-60 animate-blob"></div>
+        <div className="absolute bottom-20 right-10 w-[420px] h-[420px] bg-gradient-to-br from-emerald-200 to-teal-300 rounded-full blur-3xl opacity-60 animate-blob animation-delay-2000"></div>
 
-        <form onSubmit={handleLogIn} className="space-y-5">
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Email
+        <FaLeaf className="absolute top-32 right-1/4 text-green-300 text-4xl opacity-40 animate-float" />
+        <FaStar className="absolute bottom-40 left-1/4 text-emerald-300 text-3xl opacity-40 animate-float animation-delay-1000" />
+      </div>
+
+      {/* CARD */}
+      <div className="relative bg-white rounded-[2rem] shadow-2xl p-12 w-full max-w-lg border-2 border-white/60 backdrop-blur-xl">
+        
+        {/* HEADER */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-3xl shadow-xl mb-5">
+            <FaLeaf className="text-white text-3xl animate-pulse" />
+          </div>
+
+          <h2 className="text-5xl font-black mb-2 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent">
+            Welcome Back
+          </h2>
+          <p className="text-gray-600 flex items-center justify-center gap-2">
+            Login to continue your journey <FaLeaf className="text-green-500" />
+          </p>
+        </div>
+
+        {/* FORM */}
+        <form onSubmit={handleLogIn} className="space-y-6">
+          
+          {/* EMAIL */}
+          <div className="group">
+            <label className="text-sm font-semibold text-gray-700 mb-2 block">
+              Email Address
             </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-              required
-            />
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-5 flex items-center">
+                <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                  <FaEnvelope className="text-green-600 text-sm" />
+                </div>
+              </div>
+              <input
+                type="email"
+                name="email"
+                placeholder="example@gmail.com"
+                required
+                className="w-full pl-[4.5rem] pr-5 py-4 border-2 border-gray-200 rounded-2xl outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-gray-50"
+              />
+            </div>
           </div>
 
           {/* PASSWORD */}
-          <div className="relative">
-            <label className="block text-gray-700 font-medium mb-1">
+          <div className="group">
+            <label className="text-sm font-semibold text-gray-700 mb-2 block">
               Password
             </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-5 flex items-center">
+                <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                  <FaLock className="text-green-600 text-sm" />
+                </div>
+              </div>
 
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Enter your password"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-green-500"
-              required
-            />
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="••••••••"
+                required
+                className="w-full pl-[4.5rem] pr-16 py-4 border-2 border-gray-200 rounded-2xl outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-gray-50"
+              />
 
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-[52px] transform -translate-y-1/2 cursor-pointer text-gray-600"
-            >
-              {showPassword ? (
-                <AiFillEye size={22} />
-              ) : (
-                <AiFillEyeInvisible size={22} />
-              )}
-            </span>
-
-            <div className="text-right mt-2">
-              <Link
-                to="/auth/forgot-password"
-                className="text-sm text-green-600 hover:underline"
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-600"
               >
-                Forgot Password?
-              </Link>
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
+              </button>
             </div>
           </div>
 
           {error && (
-            <p className="text-red-500 text-sm text-center font-medium">
+            <p className="text-red-500 text-sm text-center font-semibold">
               {error}
             </p>
           )}
 
           <button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-md"
+            className="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white font-bold py-5 rounded-2xl transition hover:scale-[1.02] shadow-xl"
           >
             Login
           </button>
         </form>
 
-        <div className="flex items-center my-6">
+        {/* DIVIDER */}
+        <div className="flex items-center my-8">
           <hr className="grow border-gray-300" />
-          <span className="mx-4 text-gray-500">OR</span>
+          <span className="mx-5 text-gray-500 text-sm font-bold">OR</span>
           <hr className="grow border-gray-300" />
         </div>
 
-        {/* Google */}
+        {/* GOOGLE */}
         <button
           onClick={handleGoogleSignIn}
-          className="w-full border border-gray-300 hover:border-green-400 rounded-lg py-3 flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-md"
+          className="w-full border-2 border-gray-200 bg-white rounded-2xl py-4 flex items-center justify-center gap-3 hover:border-green-300 hover:shadow-xl transition"
         >
-          <FcGoogle className="text-2xl" />
-          <span className="text-gray-700 font-medium">Login with Google</span>
+          <FcGoogle size={26} />
+          Continue with Google
         </button>
 
-        <p className="text-center text-gray-600 mt-6">
+        <p className="text-center text-gray-600 mt-8 text-sm">
           Don’t have an account?{" "}
           <Link
             to="/auth/register"
-            className="text-green-600 font-semibold hover:underline"
+            className="text-green-600 font-bold hover:underline"
           >
-            Register Now
+            Register Now →
           </Link>
         </p>
       </div>
+
+      {/* SAME ANIMATIONS AS REGISTER */}
+      <style>{`
+        @keyframes blob {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(40px, -40px) scale(1.1); }
+        }
+        .animate-blob { animation: blob 8s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-20px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animation-delay-1000 { animation-delay: 1s; }
+      `}</style>
     </section>
   );
 };

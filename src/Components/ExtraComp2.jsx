@@ -13,7 +13,7 @@ const ExtraComp2 = () => {
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <p className="text-green-700 italic font-medium text-lg md:text-xl">
+        <p className="text-green-700 italic font-medium mt-8 text-lg md:text-xl">
           Get to Know Us
         </p>
 

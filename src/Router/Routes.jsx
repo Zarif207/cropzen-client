@@ -2,15 +2,23 @@ import { createBrowserRouter } from "react-router";
 import MainLayout from "../Layouts/MainLayout";
 import Home from "../Pages/Home";
 import AllCrops from "../Pages/AllCrops";
-import AddCrops from "../Pages/AddCrops";
-import MyPost from "../Pages/MyPost";
-import MyInterests from "../Pages/MyInterests";
+import AddCrops from "../Dashboard/AddCrops";
+import MyPost from "../Dashboard/MyPost";
+import MyInterests from "../Dashboard/MyInterests";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import CropDetails from "../Pages/CropDetails";
 import PrivateRoute from "./PrivateRoute";
-import MyProfile from "../Pages/MyProfile";
+import MyProfile from "../Dashboard/MyProfile";
 import Error404 from "../Pages/Error404";
+import PremiumMembers from "../Pages/PremiumMembers";
+import Marketplace from "../Pages/Marketplace";
+import AboutUs from "../Pages/AboutUs";
+import Dashboard from "../Dashboard/Dashboard";
+import DashboardLayout from "../Layouts/DashboardLayout";
+import DashboardHome from "../Dashboard/DashboardHome";
+import Events from "../Pages/Events";
+import AboutMore from "../Pages/AboutMore";
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +36,31 @@ export const router = createBrowserRouter([
         loader: () => fetch("https://cropzen.vercel.app/crops"),
       },
       {
-        path: "/addCrops",
+        path: "/premiumFarmers",
+        element: <PremiumMembers />,
+      },
+      {
+        path: "/marketplace",
+        element: <Marketplace />,
+      },
+      {
+        path: "/aboutUs",
+        element: <AboutUs />,
+      },
+      {
+        path: "/events",
+        element: <Events/>,
+      },
+      {
+        path: "/aboutMore",
+        element: <AboutMore/>
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/dashboard/addCrops",
         element: (
           <PrivateRoute>
             <AddCrops />
@@ -36,7 +68,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/myPosts",
+        path: "/dashboard/myPosts",
         element: (
           <PrivateRoute>
             <MyPost />
@@ -44,7 +76,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/myInterests",
+        path: "/dashboard/myInterests",
         element: (
           <PrivateRoute>
             <MyInterests />
@@ -52,7 +84,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/myProfile",
+        path: "/dashboard/myProfile",
         element: (
           <PrivateRoute>
             <MyProfile />
@@ -69,13 +101,39 @@ export const router = createBrowserRouter([
       },
       {
         path: "/cropDetails/:id",
-        element: (
-          <PrivateRoute>
-            <CropDetails />
-          </PrivateRoute>
-        ),
+        element: <CropDetails />,
         loader: ({ params }) =>
           fetch(`https://cropzen.vercel.app/crops/${params.id}`),
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <DashboardHome />,
+      },
+      {
+        path: "add-crops",
+        element: <AddCrops />,
+      },
+      {
+        path: "my-posts",
+        element: <MyPost />,
+      },
+      {
+        path: "my-interests",
+        element: <MyInterests />,
+      },
+      {
+        path: "profile",
+        element: <MyProfile />,
       },
     ],
   },

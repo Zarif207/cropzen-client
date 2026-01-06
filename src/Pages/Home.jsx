@@ -7,6 +7,9 @@ import Specialists from "../Components/Specialists";
 import ExtraComp from "../Components/ExtraComp";
 import ExtraComp2 from "../Components/ExtraComp2";
 import WebBlogs from "../Components/WebBlogs";
+import ExtraComponent1 from "../Components/ExtraComponent1";
+import Opinion from "../Components/Opinion";
+import Faq from "../Components/Faq";
 
 const Home = () => {
   const latestCropsPromise = fetch(
@@ -21,6 +24,9 @@ const Home = () => {
       <ExtraComp2 />
       <Specialists />
       <WebBlogs/>
+      <ExtraComponent1/>
+      <Opinion/>
+      <Faq/>
       <ExtraComp />
     </div>
   );
