@@ -141,7 +141,7 @@ const Register = () => {
           </p>
         </div>
 
-        <div onSubmit={handleRegister} className="space-y-6">
+        <form onSubmit={handleRegister} className="space-y-6">
           {/* Name */}
           <div className="group">
             <label className="block text-gray-700 font-semibold mb-2.5 text-sm tracking-wide">
@@ -156,7 +156,8 @@ const Register = () => {
               <input
                 type="text"
                 name="displayName"
-                placeholder="John Doe"
+                placeholder="Name"
+                required
                 className="w-full pl-[4.5rem] pr-5 py-4 border-2 border-gray-200 rounded-2xl outline-none transition-all duration-300 focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-gradient-to-br from-gray-50 to-white text-gray-900 placeholder-gray-400 hover:border-green-300 hover:shadow-lg font-medium"
               />
             </div>
@@ -177,6 +178,7 @@ const Register = () => {
                 type="email"
                 name="email"
                 placeholder="example@gmail.com"
+                required
                 className="w-full pl-[4.5rem] pr-5 py-4 border-2 border-gray-200 rounded-2xl outline-none transition-all duration-300 focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-gradient-to-br from-gray-50 to-white text-gray-900 placeholder-gray-400 hover:border-green-300 hover:shadow-lg font-medium"
               />
             </div>
@@ -217,6 +219,7 @@ const Register = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="••••••••"
+                required
                 className="w-full pl-[4.5rem] pr-16 py-4 border-2 border-gray-200 rounded-2xl outline-none transition-all duration-300 focus:border-green-500 focus:ring-4 focus:ring-green-100 bg-gradient-to-br from-gray-50 to-white text-gray-900 placeholder-gray-400 hover:border-green-300 hover:shadow-lg font-medium"
               />
               <button
@@ -239,7 +242,6 @@ const Register = () => {
 
           <button
             type="submit"
-            onClick={handleRegister}
             className="relative w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white font-bold py-5 rounded-2xl transition-all duration-500 transform hover:scale-[1.02] active:scale-[0.98] mt-8 shadow-2xl shadow-green-500/40 hover:shadow-green-500/60 group overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -248,7 +250,7 @@ const Register = () => {
               <FaStar className="animate-spin-slow" />
             </span>
           </button>
-        </div>
+        </form>
 
         <div className="flex items-center my-8">
           <hr className="grow border-gray-300" />
