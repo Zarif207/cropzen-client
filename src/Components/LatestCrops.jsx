@@ -1,15 +1,74 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Crops from "./Crops";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { motion } from "framer-motion";
 
 const LatestCrops = ({ latestCropsPromise }) => {
   const [crops, setCrops] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
-    latestCropsPromise.then((data) => setCrops(data));
-  }, [latestCropsPromise]);
+    // This will run every time the component is rendered
+    const fetchLatestCrops = async () => {
+      setLoading(true);
+      try {
+        // Add timestamp to prevent caching
+        const timestamp = new Date().getTime();
+        const response = await fetch(`https://cropzen.vercel.app/crops?t=${timestamp}`, {
+          cache: "no-cache",
+          headers: {
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0"
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch');
+        }
+        
+        const data = await response.json();
+        
+        // Sort by newest first - check multiple date fields
+        const sortedCrops = data
+          .sort((a, b) => {
+            const getDate = (item) => {
+              return new Date(
+                item.createdAt || 
+                item.addedDate || 
+                item.created_at || 
+                item.date || 
+                item._id
+              ).getTime();
+            };
+            return getDate(b) - getDate(a);
+          })
+          .slice(0, 6);
+        
+        setCrops(sortedCrops);
+      } catch (error) {
+        console.error("Error fetching crops:", error);
+        
+        // Fallback to promise prop if available
+        if (latestCropsPromise) {
+          try {
+            const data = await latestCropsPromise;
+            setCrops(data.slice(0, 6));
+          } catch (err) {
+            console.error("Error with promise:", err);
+          }
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestCrops();
+    
+    // Also refetch when location changes (user navigates back)
+  }, [location.pathname, latestCropsPromise]);
 
   return (
     <div className="mb-12 px-4 md:px-10 lg:px-20">
@@ -41,17 +100,41 @@ const LatestCrops = ({ latestCropsPromise }) => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        {crops.map((crop) => (
-          <motion.div
-            key={crop._id}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-            <Crops crops={crop} />
-          </motion.div>
-        ))}
+        {loading ? (
+          // Show previous crops while loading to prevent flash
+          crops.length > 0 ? (
+            crops.map((crop) => (
+              <motion.div
+                key={crop._id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4 }}
+              >
+                <Crops crops={crop} />
+              </motion.div>
+            ))
+          ) : (
+            // Loading skeleton only if no crops yet
+            Array(6).fill(0).map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="bg-gray-200 h-64 rounded-lg"></div>
+              </div>
+            ))
+          )
+        ) : (
+          crops.map((crop) => (
+            <motion.div
+              key={crop._id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              <Crops crops={crop} />
+            </motion.div>
+          ))
+        )}
       </motion.div>
 
       {/* BUTTON */}
