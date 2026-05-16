@@ -75,7 +75,7 @@ const AboutUs = () => {
             </Link>
           </div>
 
-          {/* Right image */}
+        
           <div className="flex justify-center">
             <img
               src={aboutimg2}
