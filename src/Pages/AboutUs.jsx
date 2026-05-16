@@ -31,9 +31,9 @@ const AboutUs = () => {
   return (
     <section className="bg-[#fdfcf8] py-20">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Top content */}
+        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-          {/* Left image */}
+          
           <div className="flex justify-center">
             <img
               src={aboutimg1}
