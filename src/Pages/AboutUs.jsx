@@ -42,7 +42,7 @@ const AboutUs = () => {
             />
           </div>
 
-          {/* Center text */}
+          
           <div className="text-center px-4">
             <p className="text-sm text-green-700 tracking-wide font-medium mb-2">
               Welcome to Cropzen Agriculture & Organic Farms
